@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Simulating DNA with Different Solvation Models &#8212; Amber DNA Solvation Tutorial  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+    <link rel="stylesheet" type="text/css" href="_static/basic.css?v=eeb27264" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+    <link rel="stylesheet" type="text/css" href="_static/amberNewFmt.css?v=ef17bba9" />
+    <link rel="stylesheet" type="text/css" href="_static/default.css?v=cde477a7" />
+    <link rel="stylesheet" type="text/css" href="_static/tutorial.css?v=cde477a7" />
+    <script src="_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/3Dmol/2.0.1/3Dmol-min.js"></script>
+    <script src="_static/design-tabs.js?v=36754332"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="System Preparation" href="system_build.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="system_build.html" title="System Preparation"
+             accesskey="N">next</a> |</li>
+        <li class="nav-item nav-item-0"><a href="#">Amber DNA Solvation Tutorial  documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Simulating DNA with Different Solvation Models</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+          <div class="body" role="main">
+            
+  <section id="simulating-dna-with-different-solvation-models">
+<h1>Simulating DNA with Different Solvation Models<a class="headerlink" href="#simulating-dna-with-different-solvation-models" title="Link to this heading">¶</a></h1>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading">¶</a></h2>
+<p>The purpose of this tutorial is to provide an introduction to setting up and running simulations using the AMBER software.</p>
+<p>It is based on AMBER 23 and AmberTools 23 but should be used with the most recent version of Amber available.
+In this tutorial we run a series of simulations on the Dickerson dodecamer, a well known DNA structure.
+We will first figure out how to generate a starting structure and then use this structure to construct the necessary input files for running sander,
+the molecular dynamics engine supplied with AmberTools.</p>
+<p>In this tutorial, you will simulate a short DNA duplex
+in different solvent conditions. Because DNA is a highly
+charged molecule, the solvation environment is very important.</p>
+<p>You will perform four simulations of the DNA structure in different
+solvent conditions.:</p>
+<ol class="arabic simple">
+<li><p>DNA in vacuum with a short simulation cut-off.</p></li>
+<li><p>DNA in vacuum with no simulation cut-off.</p></li>
+<li><p>DNA in implicit solvent.</p></li>
+<li><p>DNA in explicit solvent with ions.</p></li>
+</ol>
+</section>
+<section id="learning-objectives">
+<h2>Learning Objectives<a class="headerlink" href="#learning-objectives" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>Learning Objective 1</p></li>
+<li><p>Learning Objective 2</p></li>
+</ul>
+</section>
+<section id="table-of-contents">
+<h2>Table of Contents<a class="headerlink" href="#table-of-contents" title="Link to this heading">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="system_build.html">System Preparation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="system_build.html#obtaining-the-starting-structure">Obtaining the Starting Structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="system_build.html#preparing-the-starting-systems">Preparing the Starting Systems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="system_build.html#creating-prmtop-and-inpcrd-files-for-vacuum-system">Creating prmtop and inpcrd Files for Vacuum System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="system_build.html#creating-prmtop-and-inpcrd-files-for-solvated-system">Creating prmtop and inpcrd files for solvated system</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="system_build.html" title="System Preparation"
+             >next</a> |</li>
+        <li class="nav-item nav-item-0"><a href="#">Amber DNA Solvation Tutorial  documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Simulating DNA with Different Solvation Models</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright .
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    </div>
+  </body>
+</html>

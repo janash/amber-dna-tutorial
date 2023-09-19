@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>System Preparation &#8212; Amber DNA Solvation Tutorial  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+    <link rel="stylesheet" type="text/css" href="_static/basic.css?v=eeb27264" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+    <link rel="stylesheet" type="text/css" href="_static/amberNewFmt.css?v=ef17bba9" />
+    <link rel="stylesheet" type="text/css" href="_static/default.css?v=cde477a7" />
+    <link rel="stylesheet" type="text/css" href="_static/tutorial.css?v=cde477a7" />
+    <script src="_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/3Dmol/2.0.1/3Dmol-min.js"></script>
+    <script src="_static/design-tabs.js?v=36754332"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Simulating DNA with Different Solvation Models" href="index.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="index.html" title="Simulating DNA with Different Solvation Models"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Amber DNA Solvation Tutorial  documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">System Preparation</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+          <div class="body" role="main">
+            
+  <section id="system-preparation">
+<h1>System Preparation<a class="headerlink" href="#system-preparation" title="Link to this heading">¶</a></h1>
+<section id="obtaining-the-starting-structure">
+<h2>Obtaining the Starting Structure<a class="headerlink" href="#obtaining-the-starting-structure" title="Link to this heading">¶</a></h2>
+<p>Obtain DNA structure from the Protein Data Bank (PDB). We will be using the structure <a class="reference external" href="https://files.rcsb.org/download/1BNA.pdb">1bna</a>.</p>
+</section>
+<section id="preparing-the-starting-systems">
+<h2>Preparing the Starting Systems<a class="headerlink" href="#preparing-the-starting-systems" title="Link to this heading">¶</a></h2>
+<p>For our simulations, we will be using implicit solvent models, or an explicit solvent model with ions.
+Our starting structure will be a DNA structure from the Protein Databank.
+We will strip water and ion molecules from this structure, then use <code class="docutils literal notranslate"><span class="pre">tleap</span></code>
+to load forcefields and create Amber topology and coordinate files.</p>
+<section id="isolating-dna-using-cpptraj">
+<h3>Isolating DNA using <code class="docutils literal notranslate"><span class="pre">cpptraj</span></code><a class="headerlink" href="#isolating-dna-using-cpptraj" title="Link to this heading">¶</a></h3>
+<p>Start cpptraj by executing the command <code class="docutils literal notranslate"><span class="pre">cpptraj</span></code> in your terminal:</p>
+<p>The DNA structure we’ve obtained from the Protein Data Bank contains some water molecules.
+We will use <code class="docutils literal notranslate"><span class="pre">cpptraj</span></code> to strip out the water molecules.
+Start <code class="docutils literal notranslate"><span class="pre">cpptraj</span></code> by typing its name into your terminal.</p>
+<div class="sd-tab-set docutils">
+<input checked="checked" id="sd-tab-item-0" name="sd-tab-set-0" type="radio">
+</input><label class="sd-tab-label" data-sync-id="tabcode-shell" for="sd-tab-item-0">
+SHELL</label><div class="sd-tab-content docutils">
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>cpptraj
+</pre></div>
+</div>
+</div>
+</div>
+<p>The following set of commands can be typed into <code class="docutils literal notranslate"><span class="pre">cpptraj</span></code> to strip the solvent from the PDB file.
+The <code class="docutils literal notranslate"><span class="pre">parm</span> <span class="pre">1bna.pdb</span></code> reads the PDB as an Amber topology file.
+The line <code class="docutils literal notranslate"><span class="pre">trajin</span> <span class="pre">1bna.pdb</span></code> reads in the coordinates of the PDB file.
+The line <code class="docutils literal notranslate"><span class="pre">strip</span> <span class="pre">!:1-24</span></code> strips everything but residues
+<code class="docutils literal notranslate"><span class="pre">1-24</span></code>, and <code class="docutils literal notranslate"><span class="pre">trajout</span> <span class="pre">dna_only.pdb</span></code></p>
+<div class="sd-tab-set docutils">
+<input checked="checked" id="sd-tab-item-1" name="sd-tab-set-1" type="radio">
+</input><label class="sd-tab-label" data-sync-id="tabcode-cpptraj" for="sd-tab-item-1">
+CPPTRAJ</label><div class="sd-tab-content docutils">
+<div class="highlight-cpptraj notranslate"><div class="highlight"><pre><span></span>parm 1bna.pdb
+trajin 1bna.pdb
+strip !:1-24
+trajout dna_only.pdb
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="creating-prmtop-and-inpcrd-files-for-vacuum-system">
+<h2>Creating prmtop and inpcrd Files for Vacuum System<a class="headerlink" href="#creating-prmtop-and-inpcrd-files-for-vacuum-system" title="Link to this heading">¶</a></h2>
+<p>Now that we have a PDB file that only has the DNA,
+we can use <code class="docutils literal notranslate"><span class="pre">tleap</span></code> to create amber  <code class="docutils literal notranslate"><span class="pre">prmtop</span></code> and <code class="docutils literal notranslate"><span class="pre">inpcrd</span></code> files.
+These <code class="docutils literal notranslate"><span class="pre">prmtop</span></code> file contains forcefield parameters and atom connectivity (or topology) - <code class="docutils literal notranslate"><span class="pre">prmtop</span></code> stands for “parameter/topology”.
+You will use the <code class="docutils literal notranslate"><span class="pre">prmtop</span></code> file for every simulation of the DNA vacuum system you perform.
+The <code class="docutils literal notranslate"><span class="pre">inpcrd</span></code> file will contain the initial coordinates for your simulation system.
+Type <code class="docutils literal notranslate"><span class="pre">tleap</span></code> into your terminal to open <code class="docutils literal notranslate"><span class="pre">tleap</span></code>.</p>
+<div class="sd-tab-set docutils">
+<input checked="checked" id="sd-tab-item-2" name="sd-tab-set-2" type="radio">
+</input><label class="sd-tab-label" data-sync-id="tabcode-shell" for="sd-tab-item-2">
+SHELL</label><div class="sd-tab-content docutils">
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>tleap
+</pre></div>
+</div>
+</div>
+</div>
+<p>The following commands load the appropriate forcefields.
+As of the writing of this tutorial (Sept 2023),
+<a class="reference external" href="https://ambermd.org/AmberModels.php">OL21 was the recommended DNA forcefield</a>.
+It is loaded into <code class="docutils literal notranslate"><span class="pre">tleap</span></code> using <code class="docutils literal notranslate"><span class="pre">source</span> <span class="pre">leaprc.DNA.OL21</span></code>.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">loadpdb</span></code> command followed by our PDB name loads in the DNA structure we created with leap in the previous step, saved in a variable called <code class="docutils literal notranslate"><span class="pre">dna</span></code>.
+In the last step, the <code class="docutils literal notranslate"><span class="pre">prmtop</span></code> and the <code class="docutils literal notranslate"><span class="pre">inpcrd</span></code> files for our system are saved.</p>
+<div class="sd-tab-set docutils">
+<input checked="checked" id="sd-tab-item-3" name="sd-tab-set-3" type="radio">
+</input><label class="sd-tab-label" data-sync-id="tabcode-tleap" for="sd-tab-item-3">
+TLEAP</label><div class="sd-tab-content docutils">
+<div class="highlight-tleap notranslate"><div class="highlight"><pre><span></span>source leaprc.DNA.OL21 
+dna = loadpdb dna_only.pdb
+saveamberparm dna dodecamer_vac.prmtop dodecamer_vac.inpcrd
+quit
+</pre></div>
+</div>
+</div>
+</div>
+<p>You can type this all into <code class="docutils literal notranslate"><span class="pre">tleap</span></code>, or you can create a <code class="docutils literal notranslate"><span class="pre">leap.in</span></code> file that contains the text in the block above.
+If you create a <code class="docutils literal notranslate"><span class="pre">leap.in</span></code>, you run tleap with the input file using</p>
+<div class="sd-tab-set docutils">
+<input checked="checked" id="sd-tab-item-4" name="sd-tab-set-4" type="radio">
+</input><label class="sd-tab-label" data-sync-id="tabcode-bash" for="sd-tab-item-4">
+BASH</label><div class="sd-tab-content docutils">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>tleap<span class="w"> </span>-f<span class="w"> </span>leap.in
+</pre></div>
+</div>
+</div>
+</div>
+<p>After running the commands above, you will see an output similar to the following:</p>
+<div class="sd-tab-set docutils">
+<input checked="checked" id="sd-tab-item-5" name="sd-tab-set-5" type="radio">
+</input><label class="sd-tab-label" data-sync-id="tabcode-output" for="sd-tab-item-5">
+OUTPUT</label><div class="sd-tab-content docutils">
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">-I: Adding AMBERHOME/dat/leap/prep to search path.</span>
+<span class="go">-I: Adding AMBERHOME/dat/leap/lib to search path.</span>
+<span class="go">-I: Adding AMBERHOME/dat/leap/parm to search path.</span>
+<span class="go">-I: Adding AMBERHOME/dat/leap/cmd to search path.</span>
+<span class="go">-f: Source leap_vac.in.</span>
+
+<span class="go">Welcome to LEaP!</span>
+<span class="go">(no leaprc in search path)</span>
+<span class="go">Sourcing: ./leap_vac.in</span>
+<span class="go">----- Source: AMBERHOME/dat/leap/cmd/leaprc.DNA.OL21</span>
+<span class="go">----- Source of AMBERHOME/dat/leap/cmd/leaprc.DNA.OL21 done</span>
+<span class="go">Log file: ./leap.log</span>
+<span class="go">Loading library: AMBERHOME/dat/leap/lib/ff-nucleic-OL21.lib</span>
+<span class="go">Loading parameters: AMBERHOME/dat/leap/parm/parm10.dat</span>
+<span class="go">Reading title:</span>
+<span class="go">PARM99 + frcmod.ff99SB + frcmod.parmbsc0 + OL3 for RNA</span>
+<span class="go">Loading parameters: AMBERHOME/dat/leap/parm/ff-nucleic-OL21.frcmod</span>
+<span class="go">Reading force field modification type file (frcmod)</span>
+<span class="go">Reading title:</span>
+<span class="go">OL21 force field for DNA (OL15 + alpha/gamma OL21), see http://ffol.upol.cz</span>
+<span class="go">Loading PDB file: ./dna_only.pdb</span>
+<span class="go">  total atoms in file: 486</span>
+<span class="go">  Leap added 272 missing atoms according to residue templates:</span>
+<span class="go">       272 H / lone pairs</span>
+<span class="go">Checking Unit.</span>
+
+<span class="go">Warning: The unperturbed charge of the unit (-22.000000) is not zero.</span>
+
+<span class="go">Note: Ignoring the warning from Unit Checking.</span>
+
+<span class="go">Building topology.</span>
+<span class="go">Building atom parameters.</span>
+<span class="go">Building bond parameters.</span>
+<span class="go">Building angle parameters.</span>
+<span class="go">Building proper torsion parameters.</span>
+<span class="go">Building improper torsion parameters.</span>
+<span class="go"> total 260 improper torsions applied</span>
+<span class="go">Building H-Bond parameters.</span>
+<span class="go">Incorporating Non-Bonded adjustments.</span>
+<span class="go">Not Marking per-residue atom chain types.</span>
+<span class="go">Marking per-residue atom chain types.</span>
+<span class="go"> (no restraints)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The output tells us what forcefields we have loaded and the name of our PDB file.
+The output gives us some information about what happened when the file was loaded:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Loading</span> <span class="n">PDB</span> <span class="n">file</span><span class="p">:</span> <span class="o">./</span><span class="n">dna_only</span><span class="o">.</span><span class="n">pdb</span>
+  <span class="n">total</span> <span class="n">atoms</span> <span class="ow">in</span> <span class="n">file</span><span class="p">:</span> <span class="mi">486</span>
+  <span class="n">Leap</span> <span class="n">added</span> <span class="mi">272</span> <span class="n">missing</span> <span class="n">atoms</span> <span class="n">according</span> <span class="n">to</span> <span class="n">residue</span> <span class="n">templates</span><span class="p">:</span>
+       <span class="mi">272</span> <span class="n">H</span> <span class="o">/</span> <span class="n">lone</span> <span class="n">pairs</span>
+<span class="n">Checking</span> <span class="n">Unit</span><span class="o">.</span>
+</pre></div>
+</div>
+<p>When we load a structure into <code class="docutils literal notranslate"><span class="pre">tleap</span></code>, one of the first thing the program does is attempt to match our existing molecules or residues to those existing in the Amber forcefields that have been loaded.
+Our simulation system for this tutorial uses all standard residues - each nucleic acid base is present and has parameters in Amber’s forcefield files.</p>
+<p>We can see that when our PDB file was loaded that <code class="docutils literal notranslate"><span class="pre">tleap</span></code> added some missing hydrogens.
+LEaP is able to do this because for each residue in the PDB file, it searches the for residues defined by our loaded forcefields that match the residue name.
+If a match is found, then the contents of the residue are copied into the UNIT created for the PDB structure.
+If no PDB `TER’ card separates the current residue from the previous one, a bond is created between the connect1 ATOM of the previous residue and the connect0 atom of the new one.
+As atoms are read from the ATOM records in the PDB, their coordinates are written into the correspondingly named ATOMs within the residue being built.
+If the entire residue is read and it is found that ATOM coordinates are missing, then external coordinates are built from the internal coordinates that were defined in the matching UNIT (residue) variable.
+This allows LEaP to build coordinates for hydrogens and lone pairs which are not specified in PDB files.</p>
+<p>A visualization of our generated structure is shown below.
+Note that you will see the top of the DNA helix (looking down the z-axis).
+Click and rotate to view.</p>
+<center><div style="height: 300px; width: 300px; position: relative;" class="viewer_3Dmoljs" data-href=pdbs/dna_only.pdb data-backgroundcolor="white"  data-style=stick;sphere:radius~0.5 ></div></center></section>
+<section id="creating-prmtop-and-inpcrd-files-for-solvated-system">
+<h2>Creating prmtop and inpcrd files for solvated system<a class="headerlink" href="#creating-prmtop-and-inpcrd-files-for-solvated-system" title="Link to this heading">¶</a></h2>
+<p>After building the vacuum system, we will make a second system that is solvated with water and ions.
+For our solvated system, we will load an additional <code class="docutils literal notranslate"><span class="pre">frcmod</span></code> file containing parameters for OPC water and associated ions.
+The OPC water file loads <a class="reference external" href="https://ambermd.org/AmberModels_ions.php">Li and Merz 12-6 ions</a>.
+For demonstration purposes, we will create a <code class="docutils literal notranslate"><span class="pre">prmotop</span></code>  and <code class="docutils literal notranslate"><span class="pre">inpcrd</span></code> with only ions (no water) first.</p>
+<div class="sd-tab-set docutils">
+<input checked="checked" id="sd-tab-item-6" name="sd-tab-set-6" type="radio">
+</input><label class="sd-tab-label" data-sync-id="tabcode-leap_solv.in" for="sd-tab-item-6">
+LEAP_SOLV.IN</label><div class="sd-tab-content docutils">
+<div class="highlight-leap_solv.in notranslate"><div class="highlight"><pre><span></span>source leaprc.DNA.OL21
+source leaprc.water.opc 
+dna = loadpdb dna_only.pdb
+addions dna Na+ 0
+saveamberparm dna dodecamer_ions.prmtop dodecamer_ions.inpcrd
+quit
+</pre></div>
+</div>
+</div>
+</div>
+<p>You can run tleap using this input file in your terminal</p>
+<div class="sd-tab-set docutils">
+<input checked="checked" id="sd-tab-item-7" name="sd-tab-set-7" type="radio">
+</input><label class="sd-tab-label" data-sync-id="tabcode-bash" for="sd-tab-item-7">
+BASH</label><div class="sd-tab-content docutils">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>tleap<span class="w"> </span>-f<span class="w"> </span>leap_ions.in
+</pre></div>
+</div>
+</div>
+</div>
+<p>From this output, you will see that <code class="docutils literal notranslate"><span class="pre">tleap</span></code> has added 22 ions to our system.
+The command <code class="docutils literal notranslate"><span class="pre">addions</span> <span class="pre">Na+</span> <span class="pre">0</span></code> adds enough ions to neutralize the system.
+The sodium ions are placed around the negatively charged DNA backbone.</p>
+<center><div style="height: 300px; width: 300px; position: relative;" class="viewer_3Dmoljs" data-href=pdbs/dna_ions.pdb data-backgroundcolor="white"  data-style=stick;sphere:radius~0.5 ></div></center><p>We will now add solvent to our system.
+Because we are simulating DNA, it will be necessary to use something besides a cubic box.
+Often, when solvating with <code class="docutils literal notranslate"><span class="pre">tleap</span></code>, we will use the <code class="docutils literal notranslate"><span class="pre">SOLVATEBOX</span></code> command.
+This command results in a rectangular box for DNA.
+Though this tutorial doesn’t require making a cubic box, consider the illustration of the solvated DNA system below.</p>
+<center><div style="height: 300px; width: 300px; position: relative;" class="viewer_3Dmoljs" data-href=pdbs/dna_rect_box.pdb data-backgroundcolor="white"  data-style=stick;sphere:radius~0.5 ></div></center><p>The box built by `tleap`` is not cubic since DNA is a cylindrical molecule (it is rectangular).
+An issue here is that the long axis of DNA could rotate (via self diffusion) such that the long axis was along the short box dimension which will, since this box will be infinitely repeated in space by the periodic boundary method, bring the ends of the DNA near their periodic images.
+One way to get around this would be to make the box cubic by specifying a list of numbers to the solvateBox command to force this to be cubic.
+However, this will add significantly more water to the calculation and slow it down tremendously.
+Alternatively we can use a different shape box of water.
+While a rectangular box is the obvious choice for tessellating in 3 dimensional space it is not the only shape that can be replicated in 3 dimensions.
+A more efficient shape to use, in terms of reducing the problem of solute rotation, and the one we will be using for this tutorial, is a truncated octahedron:</p>
+<img alt="_images/trunc_oct_3d.gif" class="align-center" src="_images/trunc_oct_3d.gif" />
+<img alt="_images/trunc_oct_flat.gif" class="align-center" src="_images/trunc_oct_flat.gif" />
+<p>A truncated octahedron is a space-filling shape which is “more spherical” than a cube, thus wasting less computation on solvent molecules distant from the solute.</p>
+<p>To add a truncated octahedral box of water around our DNA we use the <code class="docutils literal notranslate"><span class="pre">solvateoct</span></code> command.
+Our leap input would look like the following:</p>
+<div class="sd-tab-set docutils">
+<input checked="checked" id="sd-tab-item-8" name="sd-tab-set-8" type="radio">
+</input><label class="sd-tab-label" data-sync-id="tabcode-leap_solv.in" for="sd-tab-item-8">
+LEAP_SOLV.IN</label><div class="sd-tab-content docutils">
+<div class="highlight-leap_solv.in notranslate"><div class="highlight"><pre><span></span>source leaprc.DNA.OL21
+source leaprc.water.opc 
+dna = loadpdb dna_only.pdb
+addions dna Na+ 0
+solvateoct dna OPCBOX 8.0
+saveamberparm dna dodecamer_solv.prmtop dodecamer_solv.inpcrd
+quit
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now we have input files for our DNA in an octahedral solvent box.
+You can see a visualization of this system below.</p>
+<center><div style="height: 300px; width: 300px; position: relative;" class="viewer_3Dmoljs" data-href=pdbs/dna_oct_box.pdb data-backgroundcolor="white"  data-style=stick;sphere:radius~0.5 ></div></center><p>We now have files needed for our simulation.
+You can download each of these final files below:</p>
+<ol class="arabic simple">
+<li><p><a class="reference download internal" download="" href="_downloads/13a5c86bb27d0cc1bb235905585c0dea/dodecamer_vac.prmtop"><code class="xref download docutils literal notranslate"><span class="pre">dodecamer_vac.prmtop</span></code></a>, <a class="reference download internal" download="" href="_downloads/6301b70645999b7bc09c55f026a60be6/dodecamer_vac.inpcrd"><code class="xref download docutils literal notranslate"><span class="pre">dodecamer_vac.inpcrd</span></code></a></p></li>
+<li><p><a class="reference download internal" download="" href="_downloads/2d4cdc8989c03d307825dcc0bfe41160/dodecamer_ions.prmtop"><code class="xref download docutils literal notranslate"><span class="pre">dodecamer_ions.prmtop</span></code></a>, <a class="reference download internal" download="" href="_downloads/85af14b2b61db30554d715bbb9b333da/dodecamer_ions.inpcrd"><code class="xref download docutils literal notranslate"><span class="pre">dodecamer_ions.inpcrd</span></code></a></p></li>
+<li><ol class="arabic simple" start="2">
+<li><p><a class="reference download internal" download="" href="_downloads/90a9be8b373d93a998e923f2098b2cfb/dodecamer_solv.prmtop"><code class="xref download docutils literal notranslate"><span class="pre">dodecamer_solv.prmtop</span></code></a>, <a class="reference download internal" download="" href="_downloads/3bf4e1a517b790c01b72b227075f9326/dodecamer_solv.inpcrd"><code class="xref download docutils literal notranslate"><span class="pre">dodecamer_solv.inpcrd</span></code></a></p></li>
+</ol>
+</li>
+</ol>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="index.html" title="Simulating DNA with Different Solvation Models"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Amber DNA Solvation Tutorial  documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">System Preparation</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright .
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    </div>
+  </body>
+</html>

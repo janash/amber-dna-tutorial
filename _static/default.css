@@ -1,0 +1,95 @@
+a {
+    text-decoration: none;
+  }
+  @font-face {
+    font-family: OpenSans;
+    src: url(OpenSans-Regular.ttf);
+  }
+  
+  @font-face {
+    font-family: DroidSansMono;
+    src: url(DroidSansMono.ttf);
+  }
+  
+    a {
+    text-decoration: none;
+  }  
+  
+  body {
+    width: 600px;
+    margin-right: auto;
+    margin-left: auto;
+    font-family: OpenSans, Arial, Helvetica, sans-serif;
+    font-size: 12pt;
+  #  background-image: url(paper.gif);
+  }
+  
+  pre {
+    font-family: DroidSansMono, Courier, Menlo, monospace;
+    background-color: #E9E9E9;
+  }
+  h1 {
+    font-size: 16pt;
+    font-weight: bold;
+  }
+  
+  h2 {
+    font-size: 14pt;
+    font-weight: bold;
+  }
+  
+  h3 {
+    color: purple;
+    font-size: 12pt;
+    font-weight: bold;
+  }
+  
+  h4, h5, h6 {
+    font-size: 14pt;
+    font-weight: bold;
+  }
+  
+  
+  /* div class="content" separates background from body background*/
+  .content {
+    padding-top: 6pt;
+    padding-bottom: 6pt;
+    padding-right: 6pt;
+    padding-left: 6pt;
+    background-color: #FFFFFF;
+  }
+  
+  /* for code snippets */
+  span.inline_code  {font-family:"Courier New"}
+  span.code_comment {font-family:"Times New Roman"}
+  
+  /* These code-snippet classes should have about the same styling */
+  
+  /* inline code */
+  span.inline_code  {font-family:"Courier New";
+                font-weight:bold;}
+  
+  /* one line of code, with no box. */
+  div.code_line {font-family:"Courier New";
+                font-weight:bold;
+                margin-left: 4em;
+                margin-right:4em}
+  
+  /* Code in a box.  May be used with <pre> tag. */
+  div.code_box {font-family:"Courier New";
+                font-weight:bold;
+                border: 1px solid black;
+                padding: 1em;
+                margin-left: 3em;
+                margin-right:3em}
+  
+  /* Include a file and show it as code in a box. .*/
+  /* This only works reliably if the mime type is set text/plain using the .htaccess file*/
+  object.code_include {font-family:"Courier New";
+                border: 1px solid black;
+                padding: 1em;
+                margin-left: 3em;
+                width: 40em;}
+  
+  
+  

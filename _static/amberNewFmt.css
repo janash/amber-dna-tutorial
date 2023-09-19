@@ -1,0 +1,329 @@
+<style type="text/css">
+
+a         { color: #000099 }
+a:link    { color: #000099 }
+a:visited { color: #660066 }
+a:active  { color: #660066 }
+a:hover   { color: #ff3300 }
+
+a.tutorial          { color: #151515; text-decoration: none }
+a.tutorial:link     { color: #151515 }
+a.tutorial:visited  { color: #551515 }
+a.tutorial:active   { color: #151515 }
+a.tutorial:hover    { color: #ff3300 }
+
+body {
+  color: #000000;
+  background-image: url(images/AmberWallpaper.png);
+  margin: auto;
+  align: center;
+}
+
+p {
+  font-family: "Arial", "Helvetica", sans-serif;
+  text-align: justify;
+}
+
+p.toc {
+  font-family: "Arial", "Helvetica", sans-serif;
+  text-align: justify;
+  padding-left:12px;
+  text-indent: -12px;
+}
+
+p.news, p.news a {
+  font-family: "Arial", "Helvetica", sans-serif;
+  text-align: justify;
+  font-size: 18px;
+  color: #000000;
+  padding: 2px 0px;
+  margin: 0;
+}
+
+p.news a:hover {
+  color: #ff3300;
+}
+
+p.imbed {
+  font-family: "Arial", "Helvetica", sans-serif;
+  padding: 0;
+  margin: 0;
+  display: inline-block;
+}
+
+p.ourapp {
+  font-family: "Arial", "Helvetica", sans-serif;
+  color:#ff0000;
+  font-weight:bold;
+  padding: 0;
+  margin: 0;
+  display: inline-block;
+}
+
+h1{ 
+    font-family: "Arial", "Helvetica", sans-serif; 
+    font-size: 18pt;
+    color: #332288;
+}
+h2{ 
+    font-family: "Arial", "Helvetica", sans-serif; 
+    font-size: 16pt; 
+    color: #117733;
+}
+h3   { font-family: "Arial", "Helvetica", sans-serif; font-size: 12pt }
+code { font-family: "Courier", monospace }
+
+div.boxed, div.tocitem {
+  max-width:710px;
+  border-width: medium;
+  border-style: solid;
+  padding: 10px;
+  margin: 0px 0px 15px 0px;
+  border-radius: 10px;
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+}
+
+img.toc_float {
+  float:left;
+  padding-top:0em;
+  padding-bottom:1em;
+  padding-right:1.5em;
+}
+
+td.blackbox {
+  text-align: center;
+  font-family: "Arial", "Helvetica", sans-serif;
+  white-space: nowrap;
+  padding:0;
+  border: 2px solid black;
+}
+
+td.hnav, td.hnav a {
+  color: #ffffff;
+  text-align: center;
+  background-color: #990000;
+  text-decoration: none;
+  font-family: "Arial", "Helvetica", sans-serif;
+  white-space: nowrap;
+  font-size: 16px;
+  padding:4px 0px;
+}
+
+td.hnav a:hover, td.hnav:hover, td.hnav:hover a, td.hnav_curr, td.hnav_curr a {
+  color: #000000;
+  text-align: center;
+  background-color: #ff9966;
+  text-decoration: none;
+  font-family: "Arial", "Helvetica", sans-serif;
+  white-space: nowrap;
+  font-size: 16px;
+  padding:4px 0px;
+}
+
+td.hnav_sub, td.hnav_sub a {
+  color: #000000;
+  text-align: left;
+  background-color: #ff9966;
+  text-decoration: none;
+  font-family: "Arial", "Helvetica", sans-serif;
+  white-space: nowrap;
+  font-size: 16px;
+  padding:4px 4px;
+}
+
+td.gnav {
+  text-align: left;
+  text-decoration: none;
+  font-family: "Arial", "Helvetica", sans-serif;
+  background-color: #ff9966;
+  font-size: 16px;
+  padding:2px 12px;
+}
+
+td.gnav a {
+  color: #000000;
+  text-align: left;
+  text-decoration: none;
+  font-family: "Arial", "Helvetica", sans-serif;
+  font-size: 16px;
+  padding:2px 12px;
+}
+
+td.gnav a:hover, td.gnav:hover, td.gnav:hover a, td.gnav_curr, td.gnav_curr a {
+  color: #ffffff;
+  background-color: #006600;
+  text-align: left;
+  text-decoration: none;
+  font-family: "Arial", "Helvetica", sans-serif;
+  font-size: 16px;
+  padding:2px 12px;
+}
+
+td.vnav {
+  text-align: left;
+  text-decoration: none;
+  font-family: "Arial", "Helvetica", sans-serif;
+  background-color: #ff9966;
+  font-size: 16px;
+  padding:2px 4px;
+}
+
+td.vnav a {
+  color: #000000;
+  text-align: left;
+  text-decoration: none;
+  font-family: "Arial", "Helvetica", sans-serif;
+  font-size: 16px;
+  padding:2px 4px;
+}
+
+td.vnav a:hover, td.vnav:hover, td.vnav:hover a, td.vnav_curr, td.vnav_curr a {
+  color: #ffffff;
+  background-color: #090909;
+  text-align: left;
+  text-decoration: none;
+  font-family: "Arial", "Helvetica", sans-serif;
+  font-size: 16px;
+  padding:2px 4px;
+}
+
+td.vblank {
+  text-align: left;
+  text-decoration: none;
+  font-family: "Arial", "Helvetica", sans-serif;
+  background-color: #ff9966;
+  font-size: 16px;
+  padding:2px 4px;
+}
+
+td.timings {
+  min-width: 92px;
+  text-align: right;
+  text-decoration: none;
+  font-family: "Arial", "Helvetica", sans-serif;
+  padding:2px 4px;
+  border: 1px solid black;
+}
+
+td.limits {
+  min-width: 92px;
+  text-align: left;
+  text-decoration: none;
+  font-family: "Arial", "Helvetica", sans-serif;
+  padding:2px 4px;
+  border: 1px solid black;
+}
+
+td.timings_T {
+  background-color: #ffcc99;
+  min-width: 702px;
+  text-align: center;
+  text-decoration: none;
+  font-family: "Arial", "Helvetica", sans-serif;
+  padding:2px 4px;
+  border: 1px solid black;
+}
+
+td.timings_G {
+  min-width: 102px;
+  text-align: center;
+  text-decoration: none;
+  font-family: "Arial", "Helvetica", sans-serif;
+  padding:2px 4px;
+  border: 1px solid black;
+}
+
+td.timings_H1 {
+  min-width: 92px;
+  text-align: center;
+  text-decoration: none;
+  font-family: "Arial", "Helvetica", sans-serif;
+  padding:2px 4px;
+  border: 1px solid black;
+}
+
+td.timings_H2 {
+  background-color: #ff99cc;
+  min-width: 92px;
+  text-align: center;
+  text-decoration: none;
+  font-family: "Arial", "Helvetica", sans-serif;
+  padding:2px 4px;
+  border: 1px solid black;
+}
+
+td.timings_H3 {
+  background-color: #333333;
+  min-width: 92px;
+  text-align: center;
+  text-decoration: none;
+  color: #ffffff;
+  font-family: "Arial", "Helvetica", sans-serif;
+  padding:2px 4px;
+  border: 1px solid black;
+}
+
+td.timings_E {
+  min-width: 292px;
+  text-align: center;
+  text-decoration: none;
+  font-family: "Arial", "Helvetica", sans-serif;
+  padding:2px 4px;
+  border: 1px solid black;
+}
+
+td.mdin {
+  max-width: 320px;
+  text-align: left;
+  text-decoration: none;
+  font-family: "Courier New";
+  padding:2px 4px;
+}
+
+ul.tutorial_toc {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  font-family: "Arial", "Helvetica", sans-serif;
+  font-size: 16px
+}
+
+li.tutorial_toc {
+  padding: 0px 16px;
+  font-family: "Arial", "Helvetica", sans-serif;
+  font-size: 16px
+}
+
+ul.toc {
+  margin: 16px;
+  padding: 0;
+  font-family: "Arial", "Helvetica", sans-serif;
+  font-size: 16px
+}
+
+li.toc {
+  padding: 0px 4px;
+  font-family: "Arial", "Helvetica", sans-serif;
+  font-size: 16px
+}
+
+li.logi {
+  padding: 0px 4px;
+  font-family: "Arial", "Helvetica", sans-serif;
+  font-size: 16px;
+  margin-bottom: 12px;
+}
+
+blockquote.tutorial {
+  font-size: 14px;
+}
+
+img {
+  border: 0;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+</style>
