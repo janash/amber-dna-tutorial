@@ -1,0 +1,116 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<!-- saved from url=(0055)https://ambermd.org/tutorials/basic/tutorial1/index.php -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta http-equiv="Content-Language" content="en-gb">
+    <meta name="KeyWords" content="Amber, Molecular Dynamics, Charmm, Gromacs, Amber Mailing List, Archive, ucsf, Ross Walker, mpi, compiler, computational chemistry, chemistry, force field, Pharmaceutical, Research, Sander, ptraj, Leap, xleap, tleap, software, medicinal chemistry, molecular biology, simulation, tsri, Linux, Unix, Irix, SGI, Altix, ifort, Fortran, MPI, lam, mpich, Clusters, HPC, molecular viewer, molecular graphics, molecular structure, ff94, ff99, ff02, ff03, molecular recognition, protein structure, protein function, enzyme structure, enzyme function, tutorial, workshop">
+    <title>Simulating a DNA polyA-polyT Decamer</title>
+    <link rel="stylesheet" type="text/css" href="./Simulating a DNA polyA-polyT Decamer_files/amber.css">
+    
+    <link rel="stylesheet" type="text/css" href="./Simulating a DNA polyA-polyT Decamer_files/amberNewFmt.css">
+    <link rel="stylesheet" type="text/css" href="./Simulating a DNA polyA-polyT Decamer_files/default.css">
+
+</head>
+
+<body>
+
+<!-- Server-side code to determine how to display the navigation bars. -->
+
+<!-- Constitutive HTML to set up the bars, with some -->
+<!-- php output interspersed to customize the pages. -->
+<table style="width:910px; border-spacing:0px;
+              background-color:#ff9966; margin:auto">
+  <tbody><tr>
+    <td style="width:900px; background-color:#ff9966; padding:0px">
+      <a href="https://ambermd.org/index.php">       <img src="./Simulating a DNA polyA-polyT Decamer_files/SubMasthead.jpg" alt="Amber masthead" style="width:900px; height:96px; padding:0px; 
+                       display:block"></a>    </td>
+    <td style="width:10px; background-color:#990000; padding:0px;
+               vertical-align:top">
+    </td>
+  </tr>
+</tbody></table>
+<table style="width:910px; border-spacing:0px; margin:auto">
+  <tbody><tr style="width:900px; background-color:#990000">
+    <td style="width:140px; background-color:#ff9966; padding:0">
+      <img src="./Simulating a DNA polyA-polyT Decamer_files/Filler1.jpg" alt="Filler image" style="width:140px; height:32px; padding:0px; display:block">
+    </td>
+    <td class="hnav" style="width:140px">
+       <a href="https://ambermd.org/AmberTools.php">AmberTools22</a>
+       </td>    <td class="hnav" style="width:100px">
+       <a href="https://ambermd.org/AmberMD.php">Amber22</a>
+       </td>    <td class="hnav" style="width:100px">
+       <a href="https://ambermd.org/Manuals.php">Manuals</a>
+       </td>    <td class="hnav_curr" style="width:100px">
+       <a href="https://ambermd.org/tutorials/">Tutorials</a>
+       </td>    <td class="hnav" style="width:100px">
+       <a href="https://ambermd.org/AmberModels.php">Force Fields</a>
+       </td>    <td class="hnav" style="width:100px">
+       <a href="https://ambermd.org/Contact.php">Contacts</a>
+       </td>    <td class="hnav" style="width:100px">
+       <a href="https://ambermd.org/History.php">History</a>
+       </td>    <td style="width:10px; background-color:#990000; padding:0px;
+               vertical-align:top">
+    </td>
+  </tr>
+</tbody></table>
+
+<!-- Vertical bar navigation and decor -->
+<table style="width:910px; border-spacing:0px; margin:auto">
+  <tbody><tr>
+    <td style="width:140px; background-color:#ff9966; padding:0px;
+               vertical-align:top">
+      <table style="width:140px; border-spacing:0px">
+        <tbody><tr>
+          <td style="width:140px; background-color:#ff9966; padding:0">
+            <img src="./Simulating a DNA polyA-polyT Decamer_files/Filler2.jpg" alt="Filler image" style="width:140px; height:70px; padding:0px; display:block">
+          </td>
+        </tr>
+        <tr><td>
+          <p style="text-align:center"><b>Useful links:</b></p>
+        </td></tr>
+        <tr><td class="vnav" style="width:140px">
+         <a href="https://ambermd.org/index.php">Amber Home</a>
+       </td></tr>        <tr><td class="vnav" style="width:140px">
+         <a href="https://ambermd.org/GetAmber.php">Download Amber</a>
+       </td></tr>        <tr><td class="vnav" style="width:140px">
+         <a href="https://ambermd.org/Installation.php">Installation</a>
+       </td></tr>                        <tr><td class="vnav" style="width:140px">
+         <a href="https://ambermd.org/CiteAmber.php">Amber Citations</a>
+       </td></tr>        <tr><td class="vnav" style="width:140px">
+         <a href="https://ambermd.org/GPUSupport.php">GPU Support</a>
+       </td></tr>         
+                <tr><td class="vnav" style="width:140px">
+         <a href="https://ambermd.org/BugFixes.php">Updates</a>
+       </td></tr>        <tr><td class="vnav" style="width:140px">
+         <a href="https://ambermd.org/MailingLists.php">Mailing Lists</a>
+       </td></tr>        <tr><td class="vnav" style="width:140px">
+         <a href="https://ambermd.org/ForEducators.php">For Educators</a>
+       </td></tr>        <tr><td class="vnav" style="width:140px">
+         <a href="https://ambermd.org/FileFormats.php">File Formats</a>
+       </td></tr>        <tr><td class="vnav" style="width:140px">
+         <a href="https://ambermd.org/contributors.html">Contributors</a>
+       </td></tr>      </tbody></table>
+    </td>
+    <td style="width:760px; padding:0px 0px; vertical-align:top">   <!-- <td style="width:760px; padding:0px 0px; vertical-align:top"> -->
+
+<!-- Code for the splash screen image -->
+
+<!-- More server-side code to put a trace navigation bar in place -->
+<table style="width:760px; background-color:#ff9966;
+                             border-spacing:0px; display:table-row">
+                <tbody><tr><td class="hnav_sub" style="width:760px">    <a href="https://ambermd.org/tutorials/Introductory.php">5 Introductory Case Studies</a></td></tr></tbody></table>
+      <table style="padding:8px"><tbody><tr><td>
+
+<div class="content"> &nbsp;
+
+<p><span style="font-size:small">(Note: These tutorials are meant to provide
+        illustrative examples of how to use the AMBER software suite to carry
+        out simulations that can be run on a simple workstation in a reasonable
+        period of time. They do not necessarily provide the optimal choice of
+        parameters or methods for the particular application area.)<br>
+        Copyright Ross Walker 2015</span></p>
+
+    {{ body }}
+  
+
+</div></td></tr></tbody></table></td></tr></tbody></table></body></html>
