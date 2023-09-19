@@ -35,7 +35,7 @@ jobs:
 
       - name: Build Documentation
         shell: bash -l {0}
-        working-directory: docs
+        working-directory: .
         run: |
           make html
 
