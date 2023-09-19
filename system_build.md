@@ -274,4 +274,4 @@ You can download each of these final files below:
 
 1. {download}`dodecamer_vac.prmtop <files/dodecamer_vac.prmtop>`, {download}`dodecamer_vac.inpcrd <files/dodecamer_vac.inpcrd>`
 2. {download}`dodecamer_ions.prmtop <files/dodecamer_ions.prmtop>`, {download}`dodecamer_ions.inpcrd <files/dodecamer_ions.inpcrd>`
-3. 2. {download}`dodecamer_solv.prmtop <files/dodecamer_solv.prmtop>`, {download}`dodecamer_solv.inpcrd <files/dodecamer_solv.inpcrd>`
+3. {download}`dodecamer_solv.prmtop <files/dodecamer_solv.prmtop>`, {download}`dodecamer_solv.inpcrd <files/dodecamer_solv.inpcrd>`
