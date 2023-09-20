@@ -36,3 +36,4 @@ Table of Contents
    :maxdepth: 2
 
    system_build
+   vacuum/index

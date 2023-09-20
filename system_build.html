@@ -23,6 +23,7 @@
     <script src="_static/design-tabs.js?v=36754332"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Running Minimization and Molecular Dynamics in vacuo" href="vacuum/index.html" />
     <link rel="prev" title="Simulating DNA with Different Solvation Models" href="index.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
@@ -31,6 +32,9 @@
         <li class="right" style="margin-right: 10px">
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="vacuum/index.html" title="Running Minimization and Molecular Dynamics in vacuo"
+             accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="index.html" title="Simulating DNA with Different Solvation Models"
              accesskey="P">previous</a> |</li>
@@ -84,6 +88,7 @@ CPPTRAJ</label><div class="sd-tab-content docutils">
 trajin 1bna.pdb
 strip !:1-24
 trajout dna_only.pdb
+go
 </pre></div>
 </div>
 </div>
@@ -210,7 +215,7 @@ Note that you will see the top of the DNA helix (looking down the z-axis).
 Click and rotate to view.</p>
 <center><div style="height: 300px; width: 300px; position: relative;" class="viewer_3Dmoljs" data-href=pdbs/dna_only.pdb data-backgroundcolor="white"  data-style=stick;sphere:radius~0.5 ></div></center></section>
 <section id="creating-prmtop-and-inpcrd-files-for-solvated-system">
-<h2>Creating prmtop and inpcrd files for solvated system<a class="headerlink" href="#creating-prmtop-and-inpcrd-files-for-solvated-system" title="Link to this heading">¶</a></h2>
+<h2>Creating prmtop and inpcrd files for Solvated System<a class="headerlink" href="#creating-prmtop-and-inpcrd-files-for-solvated-system" title="Link to this heading">¶</a></h2>
 <p>After building the vacuum system, we will make a second system that is solvated with water and ions.
 For our solvated system, we will load an additional <code class="docutils literal notranslate"><span class="pre">frcmod</span></code> file containing parameters for OPC water and associated ions.
 The OPC water file loads <a class="reference external" href="https://ambermd.org/AmberModels_ions.php">Li and Merz 12-6 ions</a>.
@@ -276,7 +281,7 @@ quit
 </div>
 <p>Now we have input files for our DNA in an octahedral solvent box.
 You can see a visualization of this system below.</p>
-<center><div style="height: 300px; width: 300px; position: relative;" class="viewer_3Dmoljs" data-href=pdbs/dna_oct_box.pdb data-backgroundcolor="white"  data-style=stick;sphere:radius~0.5 ></div></center><p>We now have files needed for our simulation.
+<center><div style="height: 300px; width: 300px; position: relative;" class="viewer_3Dmoljs" data-href=pdbs/dna_oct_box.pdb data-backgroundcolor="white"  data-style=stick;sphere:radius~0.5 ></div></center><p>Now we have our input files we can progress to the next section which introduces running minimization and molecular dynamics.
 You can download each of these final files below:</p>
 <ol class="arabic simple">
 <li><p><a class="reference download internal" download="" href="_downloads/13a5c86bb27d0cc1bb235905585c0dea/dodecamer_vac.prmtop"><code class="xref download docutils literal notranslate"><span class="pre">dodecamer_vac.prmtop</span></code></a>, <a class="reference download internal" download="" href="_downloads/6301b70645999b7bc09c55f026a60be6/dodecamer_vac.inpcrd"><code class="xref download docutils literal notranslate"><span class="pre">dodecamer_vac.inpcrd</span></code></a></p></li>
@@ -298,6 +303,9 @@ You can download each of these final files below:</p>
         <li class="right" style="margin-right: 10px">
           <a href="genindex.html" title="General Index"
              >index</a></li>
+        <li class="right" >
+          <a href="vacuum/index.html" title="Running Minimization and Molecular Dynamics in vacuo"
+             >next</a> |</li>
         <li class="right" >
           <a href="index.html" title="Simulating DNA with Different Solvation Models"
              >previous</a> |</li>

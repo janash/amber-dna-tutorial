@@ -42,6 +42,7 @@ parm 1bna.pdb
 trajin 1bna.pdb
 strip !:1-24
 trajout dna_only.pdb
+go
 ```
 ````
 
@@ -173,7 +174,7 @@ height: 300px
 data-style: ball+stick
 ```
 
-## Creating prmtop and inpcrd files for solvated system
+## Creating prmtop and inpcrd files for Solvated System
 
 After building the vacuum system, we will make a second system that is solvated with water and ions.
 For our solvated system, we will load an additional `frcmod` file containing parameters for OPC water and associated ions.
@@ -269,7 +270,7 @@ height: 300px
 data-style: ball+stick
 ```
 
-We now have files needed for our simulation.
+Now we have our input files we can progress to the next section which introduces running minimization and molecular dynamics.
 You can download each of these final files below:
 
 1. {download}`dodecamer_vac.prmtop <files/dodecamer_vac.prmtop>`, {download}`dodecamer_vac.inpcrd <files/dodecamer_vac.inpcrd>`

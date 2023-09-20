@@ -1,0 +1,210 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Minimization &#8212; Amber DNA Solvation Tutorial  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+    <link rel="stylesheet" type="text/css" href="../_static/basic.css?v=eeb27264" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+    <link rel="stylesheet" type="text/css" href="../_static/amberNewFmt.css?v=ef17bba9" />
+    <link rel="stylesheet" type="text/css" href="../_static/default.css?v=cde477a7" />
+    <link rel="stylesheet" type="text/css" href="../_static/tutorial.css?v=cde477a7" />
+    <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/3Dmol/2.0.1/3Dmol-min.js"></script>
+    <script src="../_static/design-tabs.js?v=36754332"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Molecular Dynamics Simulation" href="simulation.html" />
+    <link rel="prev" title="Running Minimization and Molecular Dynamics in vacuo" href="index.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="simulation.html" title="Molecular Dynamics Simulation"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Running Minimization and Molecular Dynamics in vacuo"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">Amber DNA Solvation Tutorial  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Running Minimization and Molecular Dynamics in vacuo</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Minimization</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+          <div class="body" role="main">
+          <div class="content">
+            
+  <section id="minimization">
+<h1>Minimization<a class="headerlink" href="#minimization" title="Link to this heading">¶</a></h1>
+<p>In the previous section we pulled a starting structure from the Protein Data Bank.
+Since this “default” geometry may not correspond to the actual minima in the force field we are using, it is always a good idea to minimize the structure before commencing molecular dynamics.
+Failure to successfully minimize the structure may lead to instabilities when we run MD.</p>
+<p>So, given the in vacuo prmtop (<code class="docutils literal notranslate"><span class="pre">dodecamer_vac.prmtop</span></code>) and inpcrd (<code class="docutils literal notranslate"><span class="pre">dodecamer_vac.inpcrd</span></code>) files we created, we will now use `sander`` to conduct a short minimization run.
+Since we just want to “fix up” the positions of the atoms in order to remove any bad contacts that may lead to unstable molecular dynamics we will run a short (500 steps) minimization.
+This will take us towards the closest local minima.
+Minimization with sander will only ever take you to the nearest minima, it cannot cross transition states to reach lower minima.
+This is fine for our purposes, however, since all we want to do is remove the largest strains in the system.</p>
+<p>The basic usange for <code class="docutils literal notranslate"><span class="pre">sander</span></code> is as follows</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sander</span> <span class="p">[</span><span class="o">-</span><span class="n">O</span><span class="p">]</span> <span class="o">-</span><span class="n">i</span> <span class="n">mdin</span> <span class="o">-</span><span class="n">o</span> <span class="n">mdout</span> <span class="o">-</span><span class="n">p</span> <span class="n">prmtop</span> <span class="o">-</span><span class="n">c</span> <span class="n">rst7</span> <span class="o">-</span><span class="n">r</span> <span class="n">restrt</span>
+<span class="p">[</span><span class="o">-</span><span class="n">ref</span> <span class="n">refc</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">x</span> <span class="n">nc</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">v</span> <span class="n">mdvel</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">e</span> <span class="n">mden</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">inf</span> <span class="n">mdinfo</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Arguments in []’s are optional
+If an argument is not specified, the default name will be used.</p>
+<ul class="simple">
+<li><p>-O    overwrite all output files (the default behavior is to quit if any output files already exist)</p></li>
+<li><p>-i      the name of the input file (which describes the simulation options), mdin by default.</p></li>
+<li><p>-o     the name of the output file, mdout by default.</p></li>
+<li><p>-p     the parameter/topology file, prmtop by default.</p></li>
+<li><p>-c     the set of initial coordinates for this run, nc by default.</p></li>
+<li><p>-r     the final set of coordinates from this MD or minimization run, restrt by default.</p></li>
+<li><p>-ref  reference coordinates for positional restraints, if this option is specified in the input file, refc by default.</p></li>
+<li><p>-x    the molecular dynamics trajectory file (if running MD), nc by default.</p></li>
+<li><p>-v    the molecular dynamics velocities file (if running MD), mdvel by default.</p></li>
+<li><p>-e    a summary file of the energies (if running MD), mden by default.</p></li>
+<li><p>-inf  a summary file written every time energy information is printed in the output file for the current step of the minimization of MD, useful for checking on the progress of a simulation, mdinfo by default.</p></li>
+</ul>
+<section id="building-the-mdin-input-file">
+<h2>Building the mdin input file<a class="headerlink" href="#building-the-mdin-input-file" title="Link to this heading">¶</a></h2>
+<p>Now that we have the prmtop and rst7 files from xleap, all we need to run `sander`` is the mdin file which specifies the myriad of possible options for this run.</p>
+<p>The run time input to control sander is via “namelist” variables (for more information see the manual) specified in the mdin file. For example:</p>
+<div class="sd-tab-set docutils">
+<input checked="checked" id="sd-tab-item-0" name="sd-tab-set-0" type="radio">
+</input><label class="sd-tab-label" data-sync-id="tabcode-mdin" for="sd-tab-item-0">
+MDIN</label><div class="sd-tab-content docutils">
+<div class="highlight-mdin notranslate"><div class="highlight"><pre><span></span>Test run 1
+ &amp;cntrl
+     IMIN = 1, NCYC = 250, MAXCYC = 500
+/ 
+</pre></div>
+</div>
+</div>
+</div>
+<p>In the absence of a variable specification in the input file, default values are chosen; every specified variable, except the last one, needs to be followed by a comma.
+The Amber manual describes all of these inputs, for each of the possible namelists.
+The namelist used depends on the specification above, such as &amp;cntrl or &amp;ewald.
+At a minimum the &amp;cntrl namelist must be specified.
+Also notice the space or empty first column before specification of the namelist control variable; this is necessary.
+It is also necessary to end each namelist with a forward slash /.
+Other namelists (such as the `&amp;ewald`` namelist) are optional.
+After the namelist some other information may be specified, such as “GROUP” input, which allows atom selections for restraints.
+Note that the input variable and namelists have changed somewhat from earlier versions of AMBER. Refer to the sander section of the manual for more information.</p>
+<p>Next we will build a minimal input file for performing minimization on our DNA.
+In theory, it would probably be best to run a dual stage minimization where we initially use position restraints on all the heavy atoms so that in the first stage of minimization only the hydrogens that tleap added are minimized.
+Then in the second stage, we allow minimization of all atoms in the system. Since our system is fairly small and simplistic, it should be fine to skip the first stage and just minimize everything.
+An example of such a two-stage minimization approach will be given when we run simulations on our more complex solvated model in the next section.</p>
+<p>To create our input file: To turn on minimization, we specify <code class="docutils literal notranslate"><span class="pre">IMIN</span> <span class="pre">=</span> <span class="pre">1</span></code>.
+We want a fairly short minimization since we don’t actually need to reach the minima, but just want to move away from any local maxima, so we select 500 steps of minimization by specifying <code class="docutils literal notranslate"><span class="pre">MAXCYC</span> <span class="pre">=</span> <span class="pre">500</span></code>.
+Sander supports a number of different minimization algorithms, the most commonly used being steepest descent and conjugate gradient.
+The steepest descent algorithm is good for quickly removing the largest strains in the system but it also converges slowly when close to a minima.
+Here the conjugate gradient method is more efficient.
+The use of these two algorithms can be controlled using the <code class="docutils literal notranslate"><span class="pre">NCYC</span></code> flag.
+If <code class="docutils literal notranslate"><span class="pre">NCYC</span> <span class="pre">&lt;</span> <span class="pre">MAXCYC</span></code>, sander will use the steepest descent algorithm for the first NCYC steps before switching to the conjugate gradient algorithm for the remaining (<code class="docutils literal notranslate"><span class="pre">MAXCYC</span> <span class="pre">-</span> <span class="pre">NCYC</span></code>) steps.
+In this case we will run an equal number of steps with each algorithm so we set <code class="docutils literal notranslate"><span class="pre">NCYC</span> <span class="pre">=</span> <span class="pre">250</span></code>.
+Since sander assumes that the system is periodic by default we need to explicitly turn this off (<code class="docutils literal notranslate"><span class="pre">NTB</span> <span class="pre">=</span> <span class="pre">0</span></code>).
+In this simulation we will be using a constant dielectric and not an implicit (or explicit) solvent model so we set IGB = 0 (no generalized born solvation model).
+This is the default so we  don’t strictly need to specify this, but I will include it here so that we can see what differences we have in the input file when we switch on implicit solvent later.
+We also need to choose a value for the non-bonded cut off.
+A larger cut off introduces less error in the non-bonded force evaluation but increases the computational complexity and thus calculation time. 12 angstroms would seem like a reasonable tradeoff for gas phase so that is what we will initially use (<code class="docutils literal notranslate"><span class="pre">CUT</span> <span class="pre">=</span> <span class="pre">12</span></code>). Here is what the input file looks like:</p>
+<div class="sd-tab-set docutils">
+<input checked="checked" id="sd-tab-item-1" name="sd-tab-set-1" type="radio">
+</input><label class="sd-tab-label" data-sync-id="tabcode-dodecamer_min.mdin" for="sd-tab-item-1">
+DODECAMER_MIN.MDIN</label><div class="sd-tab-content docutils">
+<div class="highlight-dodecamer_min.mdin notranslate"><div class="highlight"><pre><span></span>DNA dodecamer: initial minimization prior to MD
+ &amp;cntrl
+  imin   = 1,
+  maxcyc = 500,
+  ncyc   = 250,
+  ntb    = 0,
+  igb    = 0,
+  cut    = 12
+ /
+</pre></div>
+</div>
+</div>
+</div>
+<p><em>Note</em> - There must be a blank line after the line ending in <code class="docutils literal notranslate"><span class="pre">/</span></code>.</p>
+<p>Once you have the input file, you can use <code class="docutils literal notranslate"><span class="pre">sander</span></code> to run a minimization.</p>
+<section id="running-sander-for-the-first-time">
+<h3>Running sander for the first time<a class="headerlink" href="#running-sander-for-the-first-time" title="Link to this heading">¶</a></h3>
+<p>To run <code class="docutils literal notranslate"><span class="pre">sander</span></code>, execute the following command.</p>
+<div class="sd-tab-set docutils">
+<input checked="checked" id="sd-tab-item-2" name="sd-tab-set-2" type="radio">
+</input><label class="sd-tab-label" data-sync-id="tabcode-bash" for="sd-tab-item-2">
+BASH</label><div class="sd-tab-content docutils">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sander<span class="w"> </span>-O<span class="w"> </span>-i<span class="w"> </span>dodecamer_min.mdin<span class="w"> </span>-o<span class="w"> </span>dodecamer_vac_min.out<span class="w"> </span>-c<span class="w"> </span>dodecamer_vac.inpcrd<span class="w"> </span>-p<span class="w"> </span>dodecamer_vac.prmtop<span class="w"> </span>-r<span class="w"> </span>dodecamer_vac_min.rst7
+</pre></div>
+</div>
+</div>
+</div>
+<p>Input file:</p>
+<ul class="simple">
+<li><p><a class="reference download internal" download="" href="../_downloads/d564b4f9ba2e1e54f124ef23a9dd3b60/dodecamer_min.mdin"><code class="xref download docutils literal notranslate"><span class="pre">dodecamer_min.mdin</span></code></a>.</p></li>
+</ul>
+<p>Output files:</p>
+<ul class="simple">
+<li><p><code class="xref download docutils literal notranslate"><span class="pre">dodecamer_vac_min.out</span> <span class="pre">&lt;sim/dodecamer_vac_min.out</span></code>.</p></li>
+<li><p><a class="reference download internal" download="" href="../_downloads/16db85609a4d377e3cde98fe2f6c218a/dodecamer_vac_min.rst7"><code class="xref download docutils literal notranslate"><span class="pre">dodecamer_vac_min.rst7</span></code></a></p></li>
+</ul>
+<p>This should run very quickly.</p>
+<p>Take a look at the output file produced during the minimization (dodecamer_vac_min.out).
+You will see that the energy dropped considerably between the first and last steps:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>   <span class="n">NSTEP</span>       <span class="n">ENERGY</span>          <span class="n">RMS</span>            <span class="n">GMAX</span>         <span class="n">NAME</span>    <span class="n">NUMBER</span>
+      <span class="mi">1</span>      <span class="o">-</span><span class="mf">2.0617E+03</span>     <span class="mf">2.3149E+01</span>     <span class="mf">1.1565E+02</span>     <span class="n">C2</span><span class="s1">&#39;       342</span>
+
+   <span class="n">NSTEP</span>       <span class="n">ENERGY</span>          <span class="n">RMS</span>            <span class="n">GMAX</span>         <span class="n">NAME</span>    <span class="n">NUMBER</span>
+    <span class="mi">500</span>      <span class="o">-</span><span class="mf">3.4283E+03</span>     <span class="mf">6.7555E-01</span>     <span class="mf">5.9556E+00</span>     <span class="n">C6</span>        <span class="mi">266</span>
+</pre></div>
+</div>
+<p>In spite of this, however, the structure did not change very much.
+This is because, as already mentioned, minimization will only find the nearest local minima.
+If you create PDB files for the start (<code class="docutils literal notranslate"><span class="pre">dodecamer_vac.inpcrd</span></code>) and final structures (<code class="docutils literal notranslate"><span class="pre">dodecamer_vac_min.rst7</span></code>) and compare the root-mean-squared deviations (RMSd), you will see that the two structures differ by only about 0.5 angstroms (all atom).</p>
+<center><div style="height: 300px; width: 300px; position: relative;" class="viewer_3Dmoljs" data-href=sim/overlay.pdb data-backgroundcolor="white"  data-style1=stick:color=red  data-style2=stick:color=green  data-select1=resi:["1-24"]  data-select2=resi:["25-48"] ></div></center></section>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="simulation.html" title="Molecular Dynamics Simulation"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Running Minimization and Molecular Dynamics in vacuo"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">Amber DNA Solvation Tutorial  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" >Running Minimization and Molecular Dynamics in vacuo</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Minimization</a></li> 
+      </ul>
+    </div>
+  </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright .
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    </div>
+  </body>
+</html>
