@@ -30,6 +30,7 @@ class MoleculeView(SphinxDirective):
         node = view()
         node.view_id = view_id
         node.settings = settings
+        node.settings["work_dir"] = os.path.dirname(self.env.doc2path(self.env.docname))
         return [node]
 
 
@@ -39,8 +40,9 @@ def html_visit_output_node(self, node):
         "data-backgroundcolor": "white",
         "width": "400px",
         "height": "300px",
-        "data-style": "stick",
     }
+
+
 
     if "data-pdb" not in node.settings and "data-href" not in node.settings:
         raise KeyError("You must specify a path to a pdb or file to visualize.")
@@ -48,27 +50,44 @@ def html_visit_output_node(self, node):
     if "data-pdb" in node.settings and "data-href" in node.settings:
         raise ValueError("You should only specify one molecule file to visualize.")
 
+    style_found = any(["data-style" in key for key in node.settings.keys()])
+
+    if not style_found:
+        defaults["data-style"] = "stick"
+
     for k, v in node.settings.items():
         k = k.strip()
+        v = v.replace("ball+stick", "stick;sphere:radius~0.5")
         defaults[k] = v.strip()
-
-    if defaults["data-style"].lower() == "ball+stick":
-        defaults["data-style"] = "stick;sphere:radius~0.5"
 
     source_string = ""
 
     if "data-pdb" in defaults:
         source_string = f'data-pdb={defaults["data-pdb"]}'
     elif "data-href" in defaults:
-        source_string = f'data-href={defaults["data-href"]}'
-        folder_loc = os.path.dirname(defaults["data-href"])
-        static_path = os.path.join(self.settings.env.app.builder.outdir, folder_loc)
-        try:
-            os.mkdir(f"{static_path}")
-        except FileExistsError:
-            pass
-        copy_asset_file(defaults["data-href"], static_path)
-        self.config.moleculeview_static_files.append(defaults["data-href"])
+        node.settings["data-href"] = node.settings["data-href"].strip()
+        file_location = os.path.join(node.settings["work_dir"], node.settings["data-href"])
+        file_name= os.path.basename(file_location)
+        
+        # bad path manipulations 
+        common_path = os.path.commonpath([self.settings.env.app.builder.outdir, node.settings["work_dir"]])
+        join_path = os.path.split(file_location[len(common_path)+1:])[0]
+        join_path2 = os.path.split(node.settings["work_dir"][len(common_path)+1:])
+        
+        if not join_path2[0]:
+            join_path2 = join_path2[1]
+        else:
+            join_path2 = join_path2[0]
+        copy_location = os.path.join(self.settings.env.app.builder.outdir, join_path)
+
+        if join_path2:
+            join_path = join_path[len(join_path2)+1:]
+
+        source_string = os.path.join(join_path, file_name)
+        source_string = f'data-href={source_string}'
+
+        os.makedirs(copy_location, exist_ok=True)
+        copy_asset_file(file_location, copy_location)
 
     # Set data styles
     data_style = ""
@@ -84,9 +103,8 @@ def html_visit_output_node(self, node):
     for i in range(len(select_keys)):
         select_key = select_keys[i]
         data_style += f" {select_key}={defaults[select_key]} "
-
+    
     show_string = f'<center><div style="height: {defaults["height"]}; width: {defaults["width"]}; position: relative;" class="viewer_3Dmoljs" {source_string} data-backgroundcolor="{defaults["data-backgroundcolor"]}" {data_style}></div></center>'
-
     self.body.append(show_string)
 
 
