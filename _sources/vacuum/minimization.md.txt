@@ -4,7 +4,7 @@ In the previous section we pulled a starting structure from the Protein Data Ban
 Since this "default" geometry may not correspond to the actual minima in the force field we are using, it is always a good idea to minimize the structure before commencing molecular dynamics. 
 Failure to successfully minimize the structure may lead to instabilities when we run MD.
 
-So, given the in vacuo prmtop (`dodecamer_vac.prmtop`) and inpcrd (`dodecamer_vac.inpcrd`) files we created, we will now use `sander`` to conduct a short minimization run. 
+So, given the in vacuo prmtop (`dodecamer_vac.prmtop`) and inpcrd (`dodecamer_vac.inpcrd`) files we created, we will now use `sander` to conduct a short minimization run. 
 Since we just want to "fix up" the positions of the atoms in order to remove any bad contacts that may lead to unstable molecular dynamics we will run a short (500 steps) minimization. 
 This will take us towards the closest local minima. 
 Minimization with sander will only ever take you to the nearest minima, it cannot cross transition states to reach lower minima. 
@@ -34,7 +34,7 @@ If an argument is not specified, the default name will be used.
 
 ## Building the mdin input file
 
-Now that we have the prmtop and rst7 files from xleap, all we need to run `sander`` is the mdin file which specifies the myriad of possible options for this run.
+Now that we have the prmtop and rst7 files from xleap, all we need to run `sander` is the mdin file which specifies the myriad of possible options for this run.
 
 The run time input to control sander is via "namelist" variables (for more information see the manual) specified in the mdin file. For example:
 
@@ -72,7 +72,7 @@ The use of these two algorithms can be controlled using the `NCYC` flag.
 If `NCYC < MAXCYC`, sander will use the steepest descent algorithm for the first NCYC steps before switching to the conjugate gradient algorithm for the remaining (`MAXCYC - NCYC`) steps. 
 In this case we will run an equal number of steps with each algorithm so we set `NCYC = 250`. 
 Since sander assumes that the system is periodic by default we need to explicitly turn this off (`NTB = 0`). 
-In this simulation we will be using a constant dielectric and not an implicit (or explicit) solvent model so we set IGB = 0 (no generalized born solvation model). 
+In this simulation we will be using a constant dielectric and not an implicit (or explicit) solvent model so we set `IGB = 0` (no generalized born solvation model). 
 This is the default so we  don't strictly need to specify this, but I will include it here so that we can see what differences we have in the input file when we switch on implicit solvent later. 
 We also need to choose a value for the non-bonded cut off. 
 A larger cut off introduces less error in the non-bonded force evaluation but increases the computational complexity and thus calculation time. 12 angstroms would seem like a reasonable tradeoff for gas phase so that is what we will initially use (`CUT = 12`). Here is what the input file looks like:
@@ -111,7 +111,7 @@ Input file:
 - {download}`dodecamer_min.mdin <sim/dodecamer_min.mdin>`.
 
 Output files:
-- {download}`dodecamer_vac_min.out <sim/dodecamer_vac_min.out`.
+- {download}`dodecamer_vac_min.out <sim/dodecamer_vac_min.out>`.
 - {download}`dodecamer_vac_min.rst7 <sim/dodecamer_vac_min.rst7>`
 
 This should run very quickly. 
@@ -130,14 +130,34 @@ You will see that the energy dropped considerably between the first and last ste
 In spite of this, however, the structure did not change very much. 
 This is because, as already mentioned, minimization will only find the nearest local minima. 
 If you create PDB files for the start (`dodecamer_vac.inpcrd`) and final structures (`dodecamer_vac_min.rst7`) and compare the root-mean-squared deviations (RMSd), you will see that the two structures differ by only about 0.5 angstroms (all atom).
+The image below shows an overlay of the starting (red) and minimized structures (blue).
 
 ```{moleculeView}
 data-href: sim/overlay.pdb
 data-backgroundcolor: white
 data-style1: stick:color=red
 data-select1: resi:["1-24"]
-data-style2: stick:color=green
+data-style2: stick:color=blue
 data-select2: resi:["25-48"]
 width: 300px
 height: 300px
 ```
+
+### Creating PDB files from the AMBER coordinate files
+
+You may want to generate a new pdb file so you can look at the structure using the minimized coordinates.
+You can use cpptraj for this.
+
+````{tab-set-code}
+```{code-block} cpptraj
+parm dodecamer_vac.prmtop
+trajin dodecamer_vac_min.rst7
+trajout dodecamer_vac_min.pdb
+```
+````
+
+In general, users should carefully inspect any starting structures and minimized structures; 
+specifically check to make sure the hydrogens were placed where you thought they should be, histidines are in the correct protonation state, 
+the terminal residues are properly terminated, stereochemistry is reasonable, etc. 
+There is nothing worse than finding out after you've run a nanosecond of  solvated dynamics that an H1' atom was on the wrong side and that you have simulated some strange anomer of DNA!
+

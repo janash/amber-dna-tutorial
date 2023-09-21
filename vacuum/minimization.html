@@ -23,7 +23,7 @@
     <script src="../_static/design-tabs.js?v=36754332"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Molecular Dynamics Simulation" href="simulation.html" />
+    <link rel="next" title="Running MD in-vacuo" href="simulation.html" />
     <link rel="prev" title="Running Minimization and Molecular Dynamics in vacuo" href="index.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
@@ -33,7 +33,7 @@
           <a href="../genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="simulation.html" title="Molecular Dynamics Simulation"
+          <a href="simulation.html" title="Running MD in-vacuo"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="index.html" title="Running Minimization and Molecular Dynamics in vacuo"
@@ -54,7 +54,7 @@
 <p>In the previous section we pulled a starting structure from the Protein Data Bank.
 Since this “default” geometry may not correspond to the actual minima in the force field we are using, it is always a good idea to minimize the structure before commencing molecular dynamics.
 Failure to successfully minimize the structure may lead to instabilities when we run MD.</p>
-<p>So, given the in vacuo prmtop (<code class="docutils literal notranslate"><span class="pre">dodecamer_vac.prmtop</span></code>) and inpcrd (<code class="docutils literal notranslate"><span class="pre">dodecamer_vac.inpcrd</span></code>) files we created, we will now use `sander`` to conduct a short minimization run.
+<p>So, given the in vacuo prmtop (<code class="docutils literal notranslate"><span class="pre">dodecamer_vac.prmtop</span></code>) and inpcrd (<code class="docutils literal notranslate"><span class="pre">dodecamer_vac.inpcrd</span></code>) files we created, we will now use <code class="docutils literal notranslate"><span class="pre">sander</span></code> to conduct a short minimization run.
 Since we just want to “fix up” the positions of the atoms in order to remove any bad contacts that may lead to unstable molecular dynamics we will run a short (500 steps) minimization.
 This will take us towards the closest local minima.
 Minimization with sander will only ever take you to the nearest minima, it cannot cross transition states to reach lower minima.
@@ -81,7 +81,7 @@ If an argument is not specified, the default name will be used.</p>
 </ul>
 <section id="building-the-mdin-input-file">
 <h2>Building the mdin input file<a class="headerlink" href="#building-the-mdin-input-file" title="Link to this heading">¶</a></h2>
-<p>Now that we have the prmtop and rst7 files from xleap, all we need to run `sander`` is the mdin file which specifies the myriad of possible options for this run.</p>
+<p>Now that we have the prmtop and rst7 files from xleap, all we need to run <code class="docutils literal notranslate"><span class="pre">sander</span></code> is the mdin file which specifies the myriad of possible options for this run.</p>
 <p>The run time input to control sander is via “namelist” variables (for more information see the manual) specified in the mdin file. For example:</p>
 <div class="sd-tab-set docutils">
 <input checked="checked" id="sd-tab-item-0" name="sd-tab-set-0" type="radio">
@@ -117,7 +117,7 @@ The use of these two algorithms can be controlled using the <code class="docutil
 If <code class="docutils literal notranslate"><span class="pre">NCYC</span> <span class="pre">&lt;</span> <span class="pre">MAXCYC</span></code>, sander will use the steepest descent algorithm for the first NCYC steps before switching to the conjugate gradient algorithm for the remaining (<code class="docutils literal notranslate"><span class="pre">MAXCYC</span> <span class="pre">-</span> <span class="pre">NCYC</span></code>) steps.
 In this case we will run an equal number of steps with each algorithm so we set <code class="docutils literal notranslate"><span class="pre">NCYC</span> <span class="pre">=</span> <span class="pre">250</span></code>.
 Since sander assumes that the system is periodic by default we need to explicitly turn this off (<code class="docutils literal notranslate"><span class="pre">NTB</span> <span class="pre">=</span> <span class="pre">0</span></code>).
-In this simulation we will be using a constant dielectric and not an implicit (or explicit) solvent model so we set IGB = 0 (no generalized born solvation model).
+In this simulation we will be using a constant dielectric and not an implicit (or explicit) solvent model so we set <code class="docutils literal notranslate"><span class="pre">IGB</span> <span class="pre">=</span> <span class="pre">0</span></code> (no generalized born solvation model).
 This is the default so we  don’t strictly need to specify this, but I will include it here so that we can see what differences we have in the input file when we switch on implicit solvent later.
 We also need to choose a value for the non-bonded cut off.
 A larger cut off introduces less error in the non-bonded force evaluation but increases the computational complexity and thus calculation time. 12 angstroms would seem like a reasonable tradeoff for gas phase so that is what we will initially use (<code class="docutils literal notranslate"><span class="pre">CUT</span> <span class="pre">=</span> <span class="pre">12</span></code>). Here is what the input file looks like:</p>
@@ -158,7 +158,7 @@ BASH</label><div class="sd-tab-content docutils">
 </ul>
 <p>Output files:</p>
 <ul class="simple">
-<li><p><code class="xref download docutils literal notranslate"><span class="pre">dodecamer_vac_min.out</span> <span class="pre">&lt;sim/dodecamer_vac_min.out</span></code>.</p></li>
+<li><p><a class="reference download internal" download="" href="../_downloads/525ad87b3feb833f1cfe4d3b692a8304/dodecamer_vac_min.out"><code class="xref download docutils literal notranslate"><span class="pre">dodecamer_vac_min.out</span></code></a>.</p></li>
 <li><p><a class="reference download internal" download="" href="../_downloads/16db85609a4d377e3cde98fe2f6c218a/dodecamer_vac_min.rst7"><code class="xref download docutils literal notranslate"><span class="pre">dodecamer_vac_min.rst7</span></code></a></p></li>
 </ul>
 <p>This should run very quickly.</p>
@@ -173,8 +173,29 @@ You will see that the energy dropped considerably between the first and last ste
 </div>
 <p>In spite of this, however, the structure did not change very much.
 This is because, as already mentioned, minimization will only find the nearest local minima.
-If you create PDB files for the start (<code class="docutils literal notranslate"><span class="pre">dodecamer_vac.inpcrd</span></code>) and final structures (<code class="docutils literal notranslate"><span class="pre">dodecamer_vac_min.rst7</span></code>) and compare the root-mean-squared deviations (RMSd), you will see that the two structures differ by only about 0.5 angstroms (all atom).</p>
-<center><div style="height: 300px; width: 300px; position: relative;" class="viewer_3Dmoljs" data-href=sim/overlay.pdb data-backgroundcolor="white"  data-style1=stick:color=red  data-style2=stick:color=green  data-select1=resi:["1-24"]  data-select2=resi:["25-48"] ></div></center></section>
+If you create PDB files for the start (<code class="docutils literal notranslate"><span class="pre">dodecamer_vac.inpcrd</span></code>) and final structures (<code class="docutils literal notranslate"><span class="pre">dodecamer_vac_min.rst7</span></code>) and compare the root-mean-squared deviations (RMSd), you will see that the two structures differ by only about 0.5 angstroms (all atom).
+The image below shows an overlay of the starting (red) and minimized structures (blue).</p>
+<center><div style="height: 300px; width: 300px; position: relative;" class="viewer_3Dmoljs" data-href=sim/overlay.pdb data-backgroundcolor="white"  data-style1=stick:color=red  data-style2=stick:color=blue  data-select1=resi:["1-24"]  data-select2=resi:["25-48"] ></div></center></section>
+<section id="creating-pdb-files-from-the-amber-coordinate-files">
+<h3>Creating PDB files from the AMBER coordinate files<a class="headerlink" href="#creating-pdb-files-from-the-amber-coordinate-files" title="Link to this heading">¶</a></h3>
+<p>You may want to generate a new pdb file so you can look at the structure using the minimized coordinates.
+You can use cpptraj for this.</p>
+<div class="sd-tab-set docutils">
+<input checked="checked" id="sd-tab-item-3" name="sd-tab-set-3" type="radio">
+</input><label class="sd-tab-label" data-sync-id="tabcode-cpptraj" for="sd-tab-item-3">
+CPPTRAJ</label><div class="sd-tab-content docutils">
+<div class="highlight-cpptraj notranslate"><div class="highlight"><pre><span></span>parm dodecamer_vac.prmtop
+trajin dodecamer_vac_min.rst7
+trajout dodecamer_vac_min.pdb
+</pre></div>
+</div>
+</div>
+</div>
+<p>In general, users should carefully inspect any starting structures and minimized structures;
+specifically check to make sure the hydrogens were placed where you thought they should be, histidines are in the correct protonation state,
+the terminal residues are properly terminated, stereochemistry is reasonable, etc.
+There is nothing worse than finding out after you’ve run a nanosecond of  solvated dynamics that an H1’ atom was on the wrong side and that you have simulated some strange anomer of DNA!</p>
+</section>
 </section>
 </section>
 
@@ -191,7 +212,7 @@ If you create PDB files for the start (<code class="docutils literal notranslate
           <a href="../genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="simulation.html" title="Molecular Dynamics Simulation"
+          <a href="simulation.html" title="Running MD in-vacuo"
              >next</a> |</li>
         <li class="right" >
           <a href="index.html" title="Running Minimization and Molecular Dynamics in vacuo"
