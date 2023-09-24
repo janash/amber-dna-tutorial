@@ -16,7 +16,7 @@ The program uses a default output filename so it is best to create a sub directo
 ```{code-block} bash
 mkdir vac_12Acut
 cd vac_12Acut
-process_mdout.perlv ../dodecamer_vac_md1_12Acut.out
+process_mdout.perl ../dodecamer_vac_md1_12Acut.out
 ```
 ````
 
@@ -26,7 +26,7 @@ You should repeat this process for the `nocut` output file, even though the simu
 ```{code-block} bash
 mkdir vac_nocut
 cd vac_nocut
-process_mdout.perm ../dodecamer_vac_md1_nocut.out
+process_mdout.perl ../dodecamer_vac_md1_nocut.out
 ```
 ````
 
