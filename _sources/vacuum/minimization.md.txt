@@ -153,6 +153,7 @@ You can use cpptraj for this.
 parm dodecamer_vac.prmtop
 trajin dodecamer_vac_min.rst7
 trajout dodecamer_vac_min.pdb
+go
 ```
 ````
 

@@ -1,0 +1,125 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Visualizing the trajectories with VMD &#8212; Amber DNA Solvation Tutorial  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+    <link rel="stylesheet" type="text/css" href="../_static/basic.css?v=eeb27264" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+    <link rel="stylesheet" type="text/css" href="../_static/amberNewFmt.css?v=ef17bba9" />
+    <link rel="stylesheet" type="text/css" href="../_static/default.css?v=cde477a7" />
+    <link rel="stylesheet" type="text/css" href="../_static/tutorial.css?v=cde477a7" />
+    <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/3Dmol/2.0.1/3Dmol-min.js"></script>
+    <script src="../_static/design-tabs.js?v=36754332"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Analysis" href="analysis.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="analysis.html" title="Analysis"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">Amber DNA Solvation Tutorial  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Running Minimization and Molecular Dynamics in vacuo</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Visualizing the trajectories with VMD</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+          <div class="body" role="main">
+          <div class="content">
+            
+  <section id="visualizing-the-trajectories-with-vmd">
+<h1>Visualizing the trajectories with VMD<a class="headerlink" href="#visualizing-the-trajectories-with-vmd" title="Link to this heading">¶</a></h1>
+<p>One commonly used visualization program is called <a class="reference external" href="https://www.ks.uiuc.edu/Development/Download/download.cgi?PackageName=VMD">Visual Molecular Dynamics</a>.
+You can download and install VMD from the provided link.</p>
+<p>Once VMD is installed, you can open it by typing <code class="docutils literal notranslate"><span class="pre">vmd</span></code> in to your terminal.</p>
+<p>In the main window that pops up, click <code class="docutils literal notranslate"><span class="pre">File</span> <span class="pre">-&gt;</span> <span class="pre">New</span> <span class="pre">Molecule</span></code>. This will open a window called “Molecule File Browser”.</p>
+<img alt="../_images/vmd_new_molecule.jpg" class="align-center" src="../_images/vmd_new_molecule.jpg" />
+<p>VMD supports multiple trajectory files for a single molecule.
+Thus a molecule is defined by loading the associated prmtop file.
+So, start by selecting Browse and finding the <code class="docutils literal notranslate"><span class="pre">dodecamer_vac.prmtop</span></code> file.
+Then under the heading where it states “Determine file type:” select AMBER7 Parm.
+Note: VMD will likely select this by default when you load the file.</p>
+<p>Then hit ‘Load’.</p>
+<p>Next we need to choose which trajectory to load.
+Make sure that <code class="docutils literal notranslate"><span class="pre">dodecamer_vac.prmtop</span></code> is selected in the “Load files for”.</p>
+<img alt="../_images/vmd_load_trajectory.png" class="align-center" src="../_images/vmd_load_trajectory.png" />
+<p>In this case, we will load the 12 angstrom cutoff trajectory file <code class="docutils literal notranslate"><span class="pre">dodecamer_md1_12Acut.nc</span></code>.
+Select Browse, browse for the file.
+Once you have found the file, load it and the file type should be determined automatically.
+The file type should be <code class="docutils literal notranslate"><span class="pre">NetCDF</span> <span class="pre">(AMBER,</span> <span class="pre">MMTK)</span></code>.
+When you hit “Load” again you should see all of the frames loaded into the main molecule window. 1,000 frames in total.</p>
+<img alt="../_images/vmd_movie_loaded1.jpg" class="align-center" src="../_images/vmd_movie_loaded1.jpg" />
+<p>We can now use the playback tools in the “VMD main” control panel to play our movie:</p>
+<img alt="../_images/vmd_annotated.png" class="align-center" src="../_images/vmd_annotated.png" />
+<p>You should have a go at playing the video of the trajectory.
+Note that you can rotate the view in the VMD Display window by clicking and dragging.
+You can Zoom in by scrolling or using your mouse wheel.
+As you watch the animation, notice how the DNA holds its secondary structure.
+Though there is considerable movement in the extremities, the overall structure is preserved.</p>
+<p>Is this the correct answer though?
+A stable trajectory doesn’t necessarily mean it is correct.
+Is a strand of charged DNA in vacuum really likely to be stable?
+In solvent, such electrostatic repulsions are shielded by the solvent but in vacuum, there is no such shielding and there are no external forces to help hold the chains together.
+Lets take a look at the trajectory obtained from our no cutoff simulation:</p>
+<p>If VMD is already open, close it - or if you know how, simply delete the existing molecule.</p>
+<p>Repeat the process as described above.
+Use the same <code class="docutils literal notranslate"><span class="pre">dodecamer_vac.prmtop</span></code> file but this time select the no cut off trajectory file <code class="docutils literal notranslate"><span class="pre">dodecamer_vac_md1_nocut.nc</span></code>.
+This time when you hit “Load” VMD should load the trajectory up until the point where the simulation crashed (380 frames of 0.1ps each = 38.0 ps).
+Have a look at the trajectory, the difference from the last simulation should be obvious.
+The instability of the DNA dimer is clear.</p>
+<p>The final snapshot of the simulation is shown below.</p>
+<img alt="../_images/vac_38ps.png" class="align-center" src="../_images/vac_38ps.png" />
+<p>So, which simulation is the correct one? Well, since this simulation was in vacuo and we had no neutralizing ions the conditions did not really represent laboratory conditions.
+Indeed in this “harsh” environment, with no clustered water or ions, it is likely that the DNA dodecamer is going to be unstable and so the behavior shown by our no cut off simulation is most likely the closest to reality.</p>
+<p>The take home lesson here is that you should think very carefully about what you are simulating.
+Are you really simulating realistic conditions? How are the parameters you have chosen biasing your results?
+A cutoff can be a good way to increase the speed of a simulation, but you need to be aware that it can introduce very large artifacts into your simulation.
+So, think very carefully, and try out several scenarios before you try to reach firm conclusions.</p>
+<p>One way to improve considerably on our in vacuo simulations is to make our physical model of DNA much closer to reality, i.e. include explicit neutralizing ions and also to include solvent effects, either implicitly within our model or via the use ofexplicit solvent. This is the subject of the next two stages of our tutorial here.</p>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="analysis.html" title="Analysis"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">Amber DNA Solvation Tutorial  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" >Running Minimization and Molecular Dynamics in vacuo</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Visualizing the trajectories with VMD</a></li> 
+      </ul>
+    </div>
+  </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright .
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    </div>
+  </body>
+</html>

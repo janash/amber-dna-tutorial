@@ -17,3 +17,4 @@ Analyzing the results
    minimization
    simulation
    analysis
+   visualization_vmd

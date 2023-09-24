@@ -213,7 +213,7 @@ This allows LEaP to build coordinates for hydrogens and lone pairs which are not
 <p>A visualization of our generated structure is shown below.
 Note that you will see the top of the DNA helix (looking down the z-axis).
 Click and rotate to view.</p>
-<center><div style="height: 300px; width: 300px; position: relative;" class="viewer_3Dmoljs" data-href=pdbs/dna_only.pdb data-backgroundcolor="white"  data-style=stick;sphere:radius~0.5 ></div></center></section>
+<center><div style='height: 300px; width: 300px; position: relative;' class='viewer_3Dmoljs' data-href=pdbs/dna_only.pdb data-backgroundcolor='white'  data-style=stick;sphere:radius~0.5 ></div></center></section>
 <section id="creating-prmtop-and-inpcrd-files-for-solvated-system">
 <h2>Creating prmtop and inpcrd files for Solvated System<a class="headerlink" href="#creating-prmtop-and-inpcrd-files-for-solvated-system" title="Link to this heading">¶</a></h2>
 <p>After building the vacuum system, we will make a second system that is solvated with water and ions.
@@ -247,12 +247,12 @@ BASH</label><div class="sd-tab-content docutils">
 <p>From this output, you will see that <code class="docutils literal notranslate"><span class="pre">tleap</span></code> has added 22 ions to our system.
 The command <code class="docutils literal notranslate"><span class="pre">addions</span> <span class="pre">Na+</span> <span class="pre">0</span></code> adds enough ions to neutralize the system.
 The sodium ions are placed around the negatively charged DNA backbone.</p>
-<center><div style="height: 300px; width: 300px; position: relative;" class="viewer_3Dmoljs" data-href=pdbs/dna_ions.pdb data-backgroundcolor="white"  data-style=stick;sphere:radius~0.5 ></div></center><p>We will now add solvent to our system.
+<center><div style='height: 300px; width: 300px; position: relative;' class='viewer_3Dmoljs' data-href=pdbs/dna_ions.pdb data-backgroundcolor='white'  data-style=stick;sphere:radius~0.5 ></div></center><p>We will now add solvent to our system.
 Because we are simulating DNA, it will be necessary to use something besides a cubic box.
 Often, when solvating with <code class="docutils literal notranslate"><span class="pre">tleap</span></code>, we will use the <code class="docutils literal notranslate"><span class="pre">SOLVATEBOX</span></code> command.
 This command results in a rectangular box for DNA.
 Though this tutorial doesn’t require making a cubic box, consider the illustration of the solvated DNA system below.</p>
-<center><div style="height: 300px; width: 300px; position: relative;" class="viewer_3Dmoljs" data-href=pdbs/dna_rect_box.pdb data-backgroundcolor="white"  data-style=stick;sphere:radius~0.5 ></div></center><p>The box built by `tleap`` is not cubic since DNA is a cylindrical molecule (it is rectangular).
+<center><div style='height: 300px; width: 300px; position: relative;' class='viewer_3Dmoljs' data-href=pdbs/dna_rect_box.pdb data-backgroundcolor='white'  data-style=stick;sphere:radius~0.5 ></div></center><p>The box built by `tleap`` is not cubic since DNA is a cylindrical molecule (it is rectangular).
 An issue here is that the long axis of DNA could rotate (via self diffusion) such that the long axis was along the short box dimension which will, since this box will be infinitely repeated in space by the periodic boundary method, bring the ends of the DNA near their periodic images.
 One way to get around this would be to make the box cubic by specifying a list of numbers to the solvateBox command to force this to be cubic.
 However, this will add significantly more water to the calculation and slow it down tremendously.
@@ -281,7 +281,7 @@ quit
 </div>
 <p>Now we have input files for our DNA in an octahedral solvent box.
 You can see a visualization of this system below.</p>
-<center><div style="height: 300px; width: 300px; position: relative;" class="viewer_3Dmoljs" data-href=pdbs/dna_oct_box.pdb data-backgroundcolor="white"  data-style=stick;sphere:radius~0.5 ></div></center><p>Now we have our input files we can progress to the next section which introduces running minimization and molecular dynamics.
+<center><div style='height: 300px; width: 300px; position: relative;' class='viewer_3Dmoljs' data-href=pdbs/dna_oct_box.pdb data-backgroundcolor='white'  data-style=stick;sphere:radius~0.5 ></div></center><p>Now we have our input files we can progress to the next section which introduces running minimization and molecular dynamics.
 You can download each of these final files below:</p>
 <ol class="arabic simple">
 <li><p><a class="reference download internal" download="" href="_downloads/13a5c86bb27d0cc1bb235905585c0dea/dodecamer_vac.prmtop"><code class="xref download docutils literal notranslate"><span class="pre">dodecamer_vac.prmtop</span></code></a>, <a class="reference download internal" download="" href="_downloads/6301b70645999b7bc09c55f026a60be6/dodecamer_vac.inpcrd"><code class="xref download docutils literal notranslate"><span class="pre">dodecamer_vac.inpcrd</span></code></a></p></li>

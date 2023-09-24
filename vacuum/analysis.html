@@ -23,6 +23,7 @@
     <script src="../_static/design-tabs.js?v=36754332"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Visualizing the trajectories with VMD" href="visualization_vmd.html" />
     <link rel="prev" title="Running MD in-vacuo" href="simulation.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
@@ -31,6 +32,9 @@
         <li class="right" style="margin-right: 10px">
           <a href="../genindex.html" title="General Index"
              accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="visualization_vmd.html" title="Visualizing the trajectories with VMD"
+             accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="simulation.html" title="Running MD in-vacuo"
              accesskey="P">previous</a> |</li>
@@ -47,6 +51,178 @@
             
   <section id="analysis">
 <h1>Analysis<a class="headerlink" href="#analysis" title="Link to this heading">¶</a></h1>
+<p>So, now we’ve run the simulations what do we want to look at?
+First off, we  want to look through the mdout files (<code class="docutils literal notranslate"><span class="pre">dodecamer_vac_md1_12Acut.out</span></code>, <code class="docutils literal notranslate"><span class="pre">dodecamer_vac_md1_nocut.out</span></code>).
+It is also a good idea to extract the various energies as a function of time to plot the total, kinetic, potential energies, etc.
+We  also want to calculate RMSd vs. time, etc.
+To look at movies (which is much more fun :-) ) we can use a visualization program such as VMD to load up the “parm and crd” (i.e. AMBER prmtop and MD trajectory) and use the animation controls to view it-more on this later.</p>
+<section id="extracting-the-energies-from-the-mdout-file">
+<h2>Extracting the energies from the mdout file<a class="headerlink" href="#extracting-the-energies-from-the-mdout-file" title="Link to this heading">¶</a></h2>
+<p>One can write an <code class="docutils literal notranslate"><span class="pre">awk</span></code> or <code class="docutils literal notranslate"><span class="pre">sed</span></code> script to pull out the energies, etc. These can be pulled out of the mden file if energy information was written out (which we didn’t do) or directly from the mdout file.
+We will use the script <code class="docutils literal notranslate"><span class="pre">process_mdout.perl</span></code> that has been designed to process mdout files and create a series of files with the various different pieces of information in them.
+The program uses a default output filename so it is best to create a sub directory for each of your output files and move to there before running the script e.g.</p>
+<div class="sd-tab-set docutils">
+<input checked="checked" id="sd-tab-item-0" name="sd-tab-set-0" type="radio">
+</input><label class="sd-tab-label" data-sync-id="tabcode-bash" for="sd-tab-item-0">
+BASH</label><div class="sd-tab-content docutils">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mkdir<span class="w"> </span>vac_12Acut
+<span class="nb">cd</span><span class="w"> </span>vac_12Acut
+process_mdout.perlv<span class="w"> </span>../dodecamer_vac_md1_12Acut.out
+</pre></div>
+</div>
+</div>
+</div>
+<p>You should repeat this process for the <code class="docutils literal notranslate"><span class="pre">nocut</span></code> output file, even though the simulation did not complete all <code class="docutils literal notranslate"><span class="pre">100,000</span></code> steps (make sure to go back to your simulation directory before this, <code class="docutils literal notranslate"><span class="pre">cd</span> <span class="pre">..</span></code>)</p>
+<div class="sd-tab-set docutils">
+<input checked="checked" id="sd-tab-item-1" name="sd-tab-set-1" type="radio">
+</input><label class="sd-tab-label" data-sync-id="tabcode-bash" for="sd-tab-item-1">
+BASH</label><div class="sd-tab-content docutils">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mkdir<span class="w"> </span>vac_nocut
+<span class="nb">cd</span><span class="w"> </span>vac_nocut
+process_mdout.perm<span class="w"> </span>../dodecamer_vac_md1_nocut.out
+</pre></div>
+</div>
+</div>
+</div>
+<p>This script takes a series of mdout files and will create a series, leading off with the prefix “summary.” such as “summary.EPTOT”, of output files. These files are just columns of the time vs. the value for each of the energy components.</p>
+<p>You can plot the summary files with your favorite graphing program.</p>
+<div class="sd-tab-set docutils">
+<input checked="checked" id="sd-tab-item-2" name="sd-tab-set-2" type="radio">
+</input><label class="sd-tab-label" for="sd-tab-item-2">
+xmgrace</label><div class="sd-tab-content docutils">
+<p>A useful program for just quickly looking at a plot of a file is  xmgrace, a very simple plotting program, but ideal for our purpose.
+To plot the total potential energy, of both runs, as a function of time we run, assuming we are in our master simulation directory:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>xmgrace<span class="w"> </span>vac_12Acut/summary.EPTOT<span class="w"> </span>vac_nocut/summary.EPTOT
+</pre></div>
+</div>
+<p>You will see a plot similar to the following:</p>
+<img alt="../_images/eptot.png" class="align-center" src="../_images/eptot.png" />
+</div>
+<input id="sd-tab-item-3" name="sd-tab-set-2" type="radio">
+</input><label class="sd-tab-label" for="sd-tab-item-3">
+python</label><div class="sd-tab-content docutils">
+<p>You can also create a plot in Python using matplotlib with a script like the one below</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+
+<span class="n">files</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+<span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+
+        <span class="n">x</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+            <span class="n">x</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">0</span><span class="p">]))</span>
+            <span class="n">y</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">1</span><span class="p">]))</span>
+            
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+
+
+<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;output.png&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>You can then create a plot by typing</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>create_plot.py<span class="w"> </span>vac_nocut/summary.EPTOT<span class="w"> </span>vac_12Acut/summary.EPTOT
+</pre></div>
+</div>
+<p>You will have an image similar to the following in the file <code class="docutils literal notranslate"><span class="pre">output.png</span></code></p>
+<img alt="../_images/output.png" class="align-center" src="../_images/output.png" />
+</div>
+</div>
+<p>In our plots, the longer simulation is the 12 angstrom cutoff simulation.
+As we can see, the 12 angstrom cutoff simulation seems to be fairly stable since the potential energy is fluctuating around a constant mean value.
+The simulation without a cutoff, however, is significantly different.
+To begin with the potential energy is some 3,000 kcal/mol higher than the 12 angstrom cutoff simulation.
+The potential energy is so large in fact that it is actually positive.
+The potential energy also decreases rapidly over the first 10 ps of simulation suggesting that a large structural change is occurring. The simulation then ends abruptly after 38.1ps with the following error:</p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go"> Frac coord min, max:   -3.5683830309286483E-004  0.99717755462998503     </span>
+<span class="go"> The system has extended beyond </span>
+<span class="go">     the extent of the virtual box.</span>
+<span class="go"> Restarting sander will recalculate</span>
+<span class="go">    a new virtual box with 30 Angstroms</span>
+<span class="go">    extra on each side, if there is a</span>
+<span class="go">    restart file for this configuration.</span>
+<span class="go"> SANDER BOMB in subroutine Routine: map_coords (ew_force.f)</span>
+<span class="go"> Atom out of bounds. If a restart has been written,</span>
+<span class="go"> restarting should resolve the error</span>
+</pre></div>
+</div>
+<p>Why the difference in potential energy? Well, by looking at our two output files this can be tracked down to the difference in the electrostatic energy. For the first step we have:</p>
+<p>12 A Cut Off:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span> <span class="n">NSTEP</span> <span class="o">=</span>        <span class="mi">0</span>   <span class="n">TIME</span><span class="p">(</span><span class="n">PS</span><span class="p">)</span> <span class="o">=</span>       <span class="mf">0.000</span>  <span class="n">TEMP</span><span class="p">(</span><span class="n">K</span><span class="p">)</span> <span class="o">=</span>   <span class="mf">299.61</span>  <span class="n">PRESS</span> <span class="o">=</span>     <span class="mf">0.0</span>
+ <span class="n">Etot</span>   <span class="o">=</span>     <span class="o">-</span><span class="mf">2751.3345</span>  <span class="n">EKtot</span>   <span class="o">=</span>       <span class="mf">676.9496</span>  <span class="n">EPtot</span>      <span class="o">=</span>     <span class="o">-</span><span class="mf">3428.2840</span>
+ <span class="n">BOND</span>   <span class="o">=</span>        <span class="mf">37.0482</span>  <span class="n">ANGLE</span>   <span class="o">=</span>       <span class="mf">107.7566</span>  <span class="n">DIHED</span>      <span class="o">=</span>       <span class="mf">637.7764</span>
+ <span class="mi">1</span><span class="o">-</span><span class="mi">4</span> <span class="n">NB</span> <span class="o">=</span>       <span class="mf">188.3005</span>  <span class="mi">1</span><span class="o">-</span><span class="mi">4</span> <span class="n">EEL</span> <span class="o">=</span>     <span class="o">-</span><span class="mf">3188.2567</span>  <span class="n">VDWAALS</span>    <span class="o">=</span>      <span class="o">-</span><span class="mf">420.6286</span>
+ <span class="n">EELEC</span>  <span class="o">=</span>      <span class="o">-</span><span class="mf">790.2805</span>  <span class="n">EHBOND</span>  <span class="o">=</span>         <span class="mf">0.0000</span>  <span class="n">RESTRAINT</span>  <span class="o">=</span>         <span class="mf">0.0000</span>
+ <span class="o">------------------------------------------------------------------------------</span>
+</pre></div>
+</div>
+<p>No Cut Off:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span> <span class="n">NSTEP</span> <span class="o">=</span>        <span class="mi">0</span>   <span class="n">TIME</span><span class="p">(</span><span class="n">PS</span><span class="p">)</span> <span class="o">=</span>       <span class="mf">0.000</span>  <span class="n">TEMP</span><span class="p">(</span><span class="n">K</span><span class="p">)</span> <span class="o">=</span>   <span class="mf">299.61</span>  <span class="n">PRESS</span> <span class="o">=</span>     <span class="mf">0.0</span>
+ <span class="n">Etot</span>   <span class="o">=</span>      <span class="mf">1701.3466</span>  <span class="n">EKtot</span>   <span class="o">=</span>       <span class="mf">676.9496</span>  <span class="n">EPtot</span>      <span class="o">=</span>      <span class="mf">1024.3971</span>
+ <span class="n">BOND</span>   <span class="o">=</span>        <span class="mf">37.0482</span>  <span class="n">ANGLE</span>   <span class="o">=</span>       <span class="mf">107.7566</span>  <span class="n">DIHED</span>      <span class="o">=</span>       <span class="mf">637.7764</span>
+ <span class="mi">1</span><span class="o">-</span><span class="mi">4</span> <span class="n">NB</span> <span class="o">=</span>       <span class="mf">188.3005</span>  <span class="mi">1</span><span class="o">-</span><span class="mi">4</span> <span class="n">EEL</span> <span class="o">=</span>     <span class="o">-</span><span class="mf">3188.2567</span>  <span class="n">VDWAALS</span>    <span class="o">=</span>      <span class="o">-</span><span class="mf">424.1288</span>
+ <span class="n">EELEC</span>  <span class="o">=</span>      <span class="mf">3665.9008</span>  <span class="n">EHBOND</span>  <span class="o">=</span>         <span class="mf">0.0000</span>  <span class="n">RESTRAINT</span>  <span class="o">=</span>         <span class="mf">0.0000</span>
+ <span class="o">------------------------------------------------------------------------------</span>
+</pre></div>
+</div>
+<p>Notice how the value of EELEC is so much larger in the no cutoff simulation.</p>
+<p>So, what has happened and how can we learn more?
+Well, first, let’s look at another type of analysis we can perform on the results, in this case, analysis of the MD trajectory files.
+From this we can hopefully understand what is happening.</p>
+</section>
+<section id="calculating-the-rmsd-vs-time">
+<h2>Calculating the RMSd vs. time<a class="headerlink" href="#calculating-the-rmsd-vs-time" title="Link to this heading">¶</a></h2>
+<p>The next step in analyzing our results is to calculate the RMSd as a function of time using <code class="docutils literal notranslate"><span class="pre">cpptraj</span></code> (an analysis program provided with AmberTools).
+The precise parameter we will be calculating in this example is the mass weighted RMSd fit between each successive structure and the first structure of our trajectory.
+This is done by providing an input file to cpptraj containing a list of commands describing the relevant files and what we want it to do, etc.:</p>
+<div class="sd-tab-set docutils">
+<input checked="checked" id="sd-tab-item-4" name="sd-tab-set-3" type="radio">
+</input><label class="sd-tab-label" data-sync-id="tabcode-cpptraj" for="sd-tab-item-4">
+CPPTRAJ</label><div class="sd-tab-content docutils">
+<div class="highlight-cpptraj notranslate"><div class="highlight"><pre><span></span>parm dodecamer_vac.prmtop
+trajin dodecamer_vac_md1_12Acut.nc
+rms first mass out dodecamer_vac_md1_12Acut.rms time 0.1
+go
+</pre></div>
+</div>
+</div>
+</div>
+<p>Repeat the analysis for the simulation with no cut off</p>
+<div class="sd-tab-set docutils">
+<input checked="checked" id="sd-tab-item-5" name="sd-tab-set-4" type="radio">
+</input><label class="sd-tab-label" data-sync-id="tabcode-cpptraj" for="sd-tab-item-5">
+CPPTRAJ</label><div class="sd-tab-content docutils">
+<div class="highlight-cpptraj notranslate"><div class="highlight"><pre><span></span>parm dodecamer_vac.prmtop
+trajin dodecamer_vac_md1_nocut.nc
+rms first mass out dodecamer_vac_md1_nocut.rms time 0.1
+go
+</pre></div>
+</div>
+</div>
+</div>
+<p>Use <code class="docutils literal notranslate"><span class="pre">xmgrace</span></code> or <code class="docutils literal notranslate"><span class="pre">matplotlib</span></code> to create a plot of the RMSd.
+You will see a plot similar to the following:</p>
+<img alt="../_images/rms_output.png" class="align-center" src="../_images/rms_output.png" />
+<p>And here we see the problem.
+While the 12 angstrom cutoff simulation has a largely constant RMSd around 2.2 angstroms the no cutoff simulation shows a steadily increasing RMSd which after 20 ps is already over 30 angstroms!!!
+This would suggest that something has gone wrong with the simulation since our system has essentially “blown up.”
+But, is this the whole story? Or does it mask a larger problem with running a simulation in vacuum?
+Why does the use of a cutoff result in a stable trajectory while the use of no cutoff (which should in theory be more accurate) leads to a “blow up”?</p>
+<p>Let’s think about this more carefully.
+Our DNA molecule consists of two chains held together by hydrogen bonds.
+Each chain has a net charge of -9 electrons.
+So, our chains have a large electrostatic repulsion as shown by the value of EELEC in the no cutoff simulation (EELEC = 1356.1545).
+Thus the two chains are repelling each other.
+For the system to be stable, the interaction between the chains, largely due to hydrogen bonding, must counteract this large electrostatic repulsion.
+Now, in the case where we used a 12 angstrom cutoff, all charges beyond the 12 angstroms distance were considered to have zero energy.
+Since the average distance between the negative charges on the DNA backbone due to the phosphate groups is 15 angstroms, the repulsion between the phosphate atoms on opposite chains was ignored when the 12 angstrom cutoff was employed.
+The electrostatic attraction due to hydrogen bonding between opposite bases is due to a much closer interaction, of the order of 2 angstroms.
+Thus while the main electrostatic repulsion interaction was excluded when we used the 12 angstrom cutoff, the main attractive force between the two chains was included so the chain held together and we obtained a stable trajectory.</p>
+<p>In the next lessons, we will visualize the trajectories to get a better idea of what happened.</p>
+</section>
 </section>
 
 
@@ -61,6 +237,9 @@
         <li class="right" style="margin-right: 10px">
           <a href="../genindex.html" title="General Index"
              >index</a></li>
+        <li class="right" >
+          <a href="visualization_vmd.html" title="Visualizing the trajectories with VMD"
+             >next</a> |</li>
         <li class="right" >
           <a href="simulation.html" title="Running MD in-vacuo"
              >previous</a> |</li>
