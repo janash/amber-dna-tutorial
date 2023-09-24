@@ -104,7 +104,7 @@ def html_visit_output_node(self, node):
         select_key = select_keys[i]
         data_style += f" {select_key}={defaults[select_key]} "
     
-    show_string = f'<center><div style="height: {defaults["height"]}; width: {defaults["width"]}; position: relative;" class="viewer_3Dmoljs" {source_string} data-backgroundcolor="{defaults["data-backgroundcolor"]}" {data_style}></div></center>'
+    show_string = f"<center><div style='height: {defaults['height']}; width: {defaults['width']}; position: relative;' class='viewer_3Dmoljs' {source_string} data-backgroundcolor='{defaults['data-backgroundcolor']}' {data_style}></div></center>"
     self.body.append(show_string)
 
 
