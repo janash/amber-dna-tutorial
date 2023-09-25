@@ -18,3 +18,4 @@ Analyzing the results
    simulation
    analysis
    visualization_vmd
+   visualization_nglview

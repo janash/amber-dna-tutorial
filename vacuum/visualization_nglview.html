@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>&lt;no title&gt; &#8212; Amber DNA Solvation Tutorial  documentation</title>
+    <title>Visualizing the trajectories with Python &#8212; Amber DNA Solvation Tutorial  documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
     <link rel="stylesheet" type="text/css" href="../_static/basic.css?v=eeb27264" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
@@ -22,7 +22,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/3Dmol/2.0.1/3Dmol-min.js"></script>
     <script src="../_static/design-tabs.js?v=36754332"></script>
     <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" /> 
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Visualizing the trajectories with VMD" href="visualization_vmd.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -30,8 +31,12 @@
         <li class="right" style="margin-right: 10px">
           <a href="../genindex.html" title="General Index"
              accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="visualization_vmd.html" title="Visualizing the trajectories with VMD"
+             accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../index.html">Amber DNA Solvation Tutorial  documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">&lt;no title&gt;</a></li> 
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Running Minimization and Molecular Dynamics in vacuo</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Visualizing the trajectories with Python</a></li> 
       </ul>
     </div>  
 
@@ -40,7 +45,70 @@
           <div class="body" role="main">
           <div class="content">
             
-  
+  <section id="visualizing-the-trajectories-with-python">
+<h1>Visualizing the trajectories with Python<a class="headerlink" href="#visualizing-the-trajectories-with-python" title="Link to this heading">¶</a></h1>
+<p>Trajectories can be visualized in <a class="reference external" href="https://jupyter.org/">JupyterLab</a> using Python libraries like <a class="reference external" href="http://nglviewer.org/nglview/latest/">nglview</a> or <a class="reference external" href="https://3dmol.csb.pitt.edu/">3dmoljs</a>.
+This tutorial will show how to visualize Amber trajectories using NGLView.</p>
+<p>In order to do this visualization, you must have both NGLView and Jupyter Lab installed.
+If using the <code class="docutils literal notranslate"><span class="pre">conda</span></code> package manager, you can install these with the command below:</p>
+<div class="sd-tab-set docutils">
+<input checked="checked" id="sd-tab-item-0" name="sd-tab-set-0" type="radio">
+</input><label class="sd-tab-label" data-sync-id="tabcode-bash" for="sd-tab-item-0">
+BASH</label><div class="sd-tab-content docutils">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>install<span class="w"> </span>-c<span class="w"> </span>conda-forge<span class="w"> </span>jupyterlab<span class="w"> </span>nglivew
+</pre></div>
+</div>
+</div>
+</div>
+<p>Once you have the packages installed, you can open JupyterLab by typing <code class="docutils literal notranslate"><span class="pre">jupyter</span> <span class="pre">lab</span></code> into your terminal.
+We will be using the Python interface to <code class="docutils literal notranslate"><span class="pre">cpptraj</span></code>, <code class="docutils literal notranslate"><span class="pre">pytraj</span></code>, to load and visualize our trajectories.
+In Jupyter Lab, type the following into a cell</p>
+<div class="sd-tab-set docutils">
+<input checked="checked" id="sd-tab-item-1" name="sd-tab-set-1" type="radio">
+</input><label class="sd-tab-label" data-sync-id="tabcode-python" for="sd-tab-item-1">
+PYTHON</label><div class="sd-tab-content docutils">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pytraj</span> <span class="k">as</span> <span class="nn">pt</span>
+<span class="n">cutoff_trajectory</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;dodecamer_vac_md1_12Acut.nc&quot;</span><span class="p">,</span> <span class="n">top</span><span class="o">=</span><span class="s2">&quot;dodecamer_vac.prmtop&quot;</span><span class="p">)</span>
+<span class="n">view</span> <span class="o">=</span> <span class="n">cutoff_trajectory</span><span class="o">.</span><span class="n">view</span><span class="p">()</span>
+<span class="n">view</span><span class="o">.</span><span class="n">clear_representations</span><span class="p">()</span>
+<span class="n">view</span><span class="o">.</span><span class="n">add_representation</span><span class="p">(</span><span class="s2">&quot;ball+stick&quot;</span><span class="p">)</span>
+<span class="n">view</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>In this code block, we have imported the Python package <code class="docutils literal notranslate"><span class="pre">pytraj</span></code>.
+We then used the <code class="docutils literal notranslate"><span class="pre">load</span></code> function in Pytraj to load in our trajectory file <code class="docutils literal notranslate"><span class="pre">dodecamer_vac_md1_12Acut.nc</span></code>.</p>
+<p>You will see something similar to the following:</p>
+<img alt="../_images/pytraj_jupyter.png" class="align-center" src="../_images/pytraj_jupyter.png" />
+<p>If you hover your mouse over the molecule, you will see a menu to play the trajectory in the lower left.</p>
+<p>Repeat the analysis in the next cell for the system with no cut-off.
+Have a look at the trajectory, the difference from the last simulation should be obvious.
+The instability of the DNA dimer is clear.</p>
+<div class="sd-tab-set docutils">
+<input checked="checked" id="sd-tab-item-2" name="sd-tab-set-2" type="radio">
+</input><label class="sd-tab-label" data-sync-id="tabcode-python" for="sd-tab-item-2">
+PYTHON</label><div class="sd-tab-content docutils">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">no_cutoff_trajectory</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;dodecamer_vac_md1_nocut.nc&quot;</span><span class="p">,</span> <span class="n">top</span><span class="o">=</span><span class="s2">&quot;dodecamer_vac.prmtop&quot;</span><span class="p">)</span>
+<span class="n">view</span> <span class="o">=</span> <span class="n">no_cutoff_trajectory</span><span class="o">.</span><span class="n">view</span><span class="p">()</span>
+<span class="n">view</span><span class="o">.</span><span class="n">clear_representations</span><span class="p">()</span>
+<span class="n">view</span><span class="o">.</span><span class="n">add_representation</span><span class="p">(</span><span class="s2">&quot;ball+stick&quot;</span><span class="p">)</span>
+<span class="n">view</span>
+</pre></div>
+</div>
+</div>
+</div>
+<img alt="../_images/dna_vac_last_frame.png" class="align-center" src="../_images/dna_vac_last_frame.png" />
+<p>So, which simulation is the correct one?
+Well, since this simulation was in vacuo and we had no neutralizing ions the conditions did not really represent laboratory conditions.
+Indeed in this “harsh” environment, with no clustered water or ions, it is likely that the DNA dodecamer is going to be unstable and so the behavior shown by our no cut off simulation is most likely the closest to reality.</p>
+<p>The take home lesson here is that you should think very carefully about what you are simulating.
+Are you really simulating realistic conditions? How are the parameters you have chosen biasing your results?
+A cutoff can be a good way to increase the speed of a simulation, but you need to be aware that it can introduce very large artifacts into your simulation.
+So, think very carefully, and try out several scenarios before you try to reach firm conclusions.</p>
+<p>One way to improve considerably on our in vacuo simulations is to make our physical model of DNA much closer to reality, i.e. include explicit neutralizing ions and also to include solvent effects, either implicitly within our model or via the use ofexplicit solvent. This is the subject of the next two stages of our tutorial here.</p>
+</section>
+
 
             <div class="clearer"></div>
           </div>
@@ -53,8 +121,12 @@
         <li class="right" style="margin-right: 10px">
           <a href="../genindex.html" title="General Index"
              >index</a></li>
+        <li class="right" >
+          <a href="visualization_vmd.html" title="Visualizing the trajectories with VMD"
+             >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../index.html">Amber DNA Solvation Tutorial  documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">&lt;no title&gt;</a></li> 
+          <li class="nav-item nav-item-1"><a href="index.html" >Running Minimization and Molecular Dynamics in vacuo</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Visualizing the trajectories with Python</a></li> 
       </ul>
     </div>
   </div>
