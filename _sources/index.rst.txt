@@ -3,8 +3,7 @@ Simulating DNA with Different Solvation Models
 
 Overview
 --------
-The purpose of this tutorial is to provide an introduction to setting up and running simulations using the AMBER software.
- 
+The purpose of this tutorial is to provide an introduction to setting up and running simulations using the AMBER software, and to explore the effect of solvation conditions and cut offs on DNA structures observed in molecular dynamics simulations.  
 It is based on AMBER 23 and AmberTools 23 but should be used with the most recent version of Amber available. 
 In this tutorial we run a series of simulations on the Dickerson dodecamer, a well known DNA structure. 
 We will first figure out how to generate a starting structure and then use this structure to construct the necessary input files for running sander, 
@@ -42,3 +41,4 @@ Table of Contents
 
    system_build
    vacuum/index
+   implicit/index

@@ -1,0 +1,101 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>DNA Solvation Tutorial &#8212; Amber DNA Solvation Tutorial  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+    <link rel="stylesheet" type="text/css" href="_static/basic.css?v=eeb27264" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+    <link rel="stylesheet" type="text/css" href="_static/amberNewFmt.css?v=ef17bba9" />
+    <link rel="stylesheet" type="text/css" href="_static/default.css?v=cde477a7" />
+    <link rel="stylesheet" type="text/css" href="_static/tutorial.css?v=cde477a7" />
+    <script src="_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/3Dmol/2.0.1/3Dmol-min.js"></script>
+    <script src="_static/design-tabs.js?v=36754332"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="nav-item nav-item-0"><a href="index.html">Amber DNA Solvation Tutorial  documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">DNA Solvation Tutorial</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+          <div class="body" role="main">
+          <div class="content">
+            
+  <section id="dna-solvation-tutorial">
+<h1>DNA Solvation Tutorial<a class="headerlink" href="#dna-solvation-tutorial" title="Link to this heading">¶</a></h1>
+<p>This is an update of <a class="reference external" href="https://ambermd.org/tutorials/basic/tutorial1/">Amber Tutorial B1</a>, which is currently a deprecated Amber tutorial.</p>
+<p>You can see the rewrite that is in this repository <a class="reference external" href="https://janash.github.io/amber-dna-tutorial/">here</a>.
+I’m using an “Amber-ified” Sphinx theme.</p>
+<p>The purpose of this tutorial is to provide an introduction to setting up and running simulations using the AMBER software, and to explore the effect of solvation conditions and cut offs on DNA structures observed in molecular dynamics simulations.</p>
+<p>It is based on AMBER 23 and AmberTools 23 but should be used with the most recent version of Amber available.
+In this tutorial we run a series of simulations on the Dickerson dodecamer, a well known DNA structure.
+We will first figure out how to generate a starting structure and then use this structure to construct the necessary input files for running sander,
+the molecular dynamics engine supplied with AmberTools.</p>
+<p>In this tutorial, you will simulate a short DNA duplex
+in different solvent conditions. Because DNA is a highly
+charged molecule, the solvation environment is very important.</p>
+<p>You will perform four simulations of the DNA structure in different
+solvent conditions.:</p>
+<ol class="arabic simple">
+<li><p>DNA in vacuum with a short simulation cut-off.</p></li>
+<li><p>DNA in vacuum with no simulation cut-off.</p></li>
+<li><p>DNA in implicit solvent.</p></li>
+<li><p>DNA in explicit solvent with ions.</p></li>
+</ol>
+<section id="learning-outcomes">
+<h2>Learning Outcomes<a class="headerlink" href="#learning-outcomes" title="Link to this heading">¶</a></h2>
+<p>After completing this tutorial, you will be able to</p>
+<ul class="simple">
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">tleap</span></code> to prepare vacuum and solvated simulated systems.</p></li>
+<li><p>Be able to explain the choice of periodic box shape (<code class="docutils literal notranslate"><span class="pre">box</span></code> vs. <code class="docutils literal notranslate"><span class="pre">oct</span></code>) when preparing solvated systems.</p></li>
+<li><p>Run minimization, vacuum, implicit solvent, and explicit solvent simulations of DNA using sander.</p></li>
+<li><p>Analyze energies. RMSD, and trajectory movies to assess simulations.</p></li>
+<li><p>Create plots with xmgrace or Python.</p></li>
+<li><p>Visualize simulation trajectories using VMD or Python and pytraj.</p></li>
+<li><p>Explain the effect of solvent conditions and cut-off on simulation of DNA.</p></li>
+</ul>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="nav-item nav-item-0"><a href="index.html">Amber DNA Solvation Tutorial  documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">DNA Solvation Tutorial</a></li> 
+      </ul>
+    </div>
+  </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright .
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    </div>
+  </body>
+</html>

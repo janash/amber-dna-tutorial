@@ -1,0 +1,147 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Minimization &#8212; Amber DNA Solvation Tutorial  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+    <link rel="stylesheet" type="text/css" href="../_static/basic.css?v=eeb27264" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+    <link rel="stylesheet" type="text/css" href="../_static/amberNewFmt.css?v=ef17bba9" />
+    <link rel="stylesheet" type="text/css" href="../_static/default.css?v=cde477a7" />
+    <link rel="stylesheet" type="text/css" href="../_static/tutorial.css?v=cde477a7" />
+    <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/3Dmol/2.0.1/3Dmol-min.js"></script>
+    <script src="../_static/design-tabs.js?v=36754332"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Running MD with Generalized Born Solvation" href="simulation.html" />
+    <link rel="prev" title="Running Minimization and Molecular Dynamics in implicit solvent" href="index.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="simulation.html" title="Running MD with Generalized Born Solvation"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Running Minimization and Molecular Dynamics in implicit solvent"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">Amber DNA Solvation Tutorial  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Running Minimization and Molecular Dynamics in implicit solvent</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Minimization</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+          <div class="body" role="main">
+          <div class="content">
+            
+  <section id="minimization">
+<h1>Minimization<a class="headerlink" href="#minimization" title="Link to this heading">¶</a></h1>
+<p>The first stage is to minimize our initial system.<br />
+We use the same prmtop and rst7 files as previously (<code class="docutils literal notranslate"><span class="pre">dodecamer_vac.prmtop</span></code>, <code class="docutils literal notranslate"><span class="pre">dodecamer_vac.inpcrd</span></code>).
+This time around though we will modify our input file to turn on the generalized Born method (<code class="docutils literal notranslate"><span class="pre">IGB=1</span></code>).
+Here is what the input file looks like (<code class="docutils literal notranslate"><span class="pre">dodecamer_gb_init_min.mdin</span></code>):</p>
+<div class="sd-tab-set docutils">
+<input checked="checked" id="sd-tab-item-0" name="sd-tab-set-0" type="radio">
+</input><label class="sd-tab-label" data-sync-id="tabcode-dodecamer_gb_init_min.mdin" for="sd-tab-item-0">
+DODECAMER_GB_INIT_MIN.MDIN</label><div class="sd-tab-content docutils">
+<div class="highlight-dodecamer_gb_init_min.mdin notranslate"><div class="highlight"><pre><span></span>dodecamer: initial minimization prior to MD GB model
+ &amp;cntrl
+  imin   = 1,
+  maxcyc = 500,
+  ncyc   = 250,
+  ntb    = 0,
+  igb    = 1,
+  cut    = 12
+ /
+</pre></div>
+</div>
+</div>
+</div>
+<p>So, now to run <code class="docutils literal notranslate"><span class="pre">sander</span></code> for minimization</p>
+<div class="sd-tab-set docutils">
+<input checked="checked" id="sd-tab-item-1" name="sd-tab-set-1" type="radio">
+</input><label class="sd-tab-label" data-sync-id="tabcode-bash" for="sd-tab-item-1">
+BASH</label><div class="sd-tab-content docutils">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sander<span class="w"> </span>-O<span class="w"> </span>-i<span class="w"> </span>dodecamer_gb_init_min.mdin<span class="w"> </span>-o<span class="w"> </span>dodecamer_gb_init_min.out<span class="w"> </span>-c<span class="w"> </span>dodecamer_vac.inpcrd<span class="w"> </span>-p<span class="w"> </span>dodecamer_vac.prmtop<span class="w"> </span>-r<span class="w"> </span>dodecamer_gb_init_min.ncrst
+</pre></div>
+</div>
+</div>
+</div>
+<p>The first thing you should notice is that this takes considerably longer than the in vacuo minimization.
+On a 1.4 GHz i5 machine it takes about 22.8 seconds (about 10 times longer than the vacuum simulation).
+Herein lies the problem with including solvent in simulations.
+As we will see, it is often an expense that cannot be avoided.</p>
+<ul class="simple">
+<li><p>Input File: <a class="reference download internal" download="" href="../_downloads/27eca9e28f87426fc67a72e28ee41a4c/dodecamer_gb_init_min.mdin"><code class="xref download docutils literal notranslate"><span class="pre">dodecamer_gb_init_min.mdin</span></code></a></p></li>
+<li><p>Output File: <code class="xref download docutils literal notranslate"><span class="pre">dodecamer_gb_init_min.out</span></code></p></li>
+</ul>
+<p>Lets take a quick look at the output file produced during the minimization.
+Again you will see that the energy has dropped between the first and last steps:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">NSTEP</span>       <span class="n">ENERGY</span>          <span class="n">RMS</span>            <span class="n">GMAX</span>         <span class="n">NAME</span>    <span class="n">NUMBER</span>
+      <span class="mi">1</span>      <span class="o">-</span><span class="mf">4.2108E+03</span>     <span class="mf">2.2915E+01</span>     <span class="mf">1.1518E+02</span>     <span class="n">C2</span><span class="s1">&#39;       342</span>
+
+ <span class="n">BOND</span>    <span class="o">=</span>       <span class="mf">94.3964</span>  <span class="n">ANGLE</span>   <span class="o">=</span>      <span class="mf">829.1701</span>  <span class="n">DIHED</span>      <span class="o">=</span>      <span class="mf">651.6560</span>
+ <span class="n">VDWAALS</span> <span class="o">=</span>     <span class="o">-</span><span class="mf">363.1866</span>  <span class="n">EEL</span>     <span class="o">=</span>     <span class="o">-</span><span class="mf">556.2827</span>  <span class="n">EGB</span>        <span class="o">=</span>    <span class="o">-</span><span class="mf">2149.1115</span>
+ <span class="mi">1</span><span class="o">-</span><span class="mi">4</span> <span class="n">VDW</span> <span class="o">=</span>      <span class="mf">263.4844</span>  <span class="mi">1</span><span class="o">-</span><span class="mi">4</span> <span class="n">EEL</span> <span class="o">=</span>    <span class="o">-</span><span class="mf">2980.9661</span>  <span class="n">RESTRAINT</span>  <span class="o">=</span>        <span class="mf">0.0000</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">NSTEP</span>       <span class="n">ENERGY</span>          <span class="n">RMS</span>            <span class="n">GMAX</span>         <span class="n">NAME</span>    <span class="n">NUMBER</span>
+    <span class="mi">500</span>      <span class="o">-</span><span class="mf">5.2499E+03</span>     <span class="mf">1.2749E-01</span>     <span class="mf">1.2471E+00</span>     <span class="n">H73</span>       <span class="mi">240</span>
+
+ <span class="n">BOND</span>    <span class="o">=</span>       <span class="mf">38.0676</span>  <span class="n">ANGLE</span>   <span class="o">=</span>      <span class="mf">106.3306</span>  <span class="n">DIHED</span>      <span class="o">=</span>      <span class="mf">640.3512</span>
+ <span class="n">VDWAALS</span> <span class="o">=</span>     <span class="o">-</span><span class="mf">436.6339</span>  <span class="n">EEL</span>     <span class="o">=</span>     <span class="o">-</span><span class="mf">143.8444</span>  <span class="n">EGB</span>        <span class="o">=</span>    <span class="o">-</span><span class="mf">2437.5625</span>
+ <span class="mi">1</span><span class="o">-</span><span class="mi">4</span> <span class="n">VDW</span> <span class="o">=</span>      <span class="mf">170.5356</span>  <span class="mi">1</span><span class="o">-</span><span class="mi">4</span> <span class="n">EEL</span> <span class="o">=</span>    <span class="o">-</span><span class="mf">3187.1040</span>  <span class="n">RESTRAINT</span>  <span class="o">=</span>        <span class="mf">0.0000</span>
+</pre></div>
+</div>
+<p>It is worth noting that the change in energy is significantly less than the <em>in vacuo</em> minimization.
+The starting energy in the Generalized Born case is significantly lower than in the in vacuo case.
+This suggests that simply solvating our initial structure prior to minimization has significantly stabilized it.
+This stabilization will be even more apparent when we run molecular dynamics on the system.
+In the figure below, the initial structure is shown in red, while the minimized structure is shown in blue.</p>
+<center><div style='height: 300px; width: 300px; position: relative;' class='viewer_3Dmoljs' data-href=sim/overlay.pdb data-backgroundcolor='white'  data-style1=stick:color=red  data-style2=stick:color=blue  data-select1=resi:["1-24"]  data-select2=resi:["25-48"] ></div></center></section>
+
+
+            <div class="clearer"></div>
+          </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="simulation.html" title="Running MD with Generalized Born Solvation"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Running Minimization and Molecular Dynamics in implicit solvent"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">Amber DNA Solvation Tutorial  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" >Running Minimization and Molecular Dynamics in implicit solvent</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Minimization</a></li> 
+      </ul>
+    </div>
+  </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright .
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    </div>
+  </body>
+</html>

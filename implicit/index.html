@@ -1,0 +1,107 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Running Minimization and Molecular Dynamics in implicit solvent &#8212; Amber DNA Solvation Tutorial  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+    <link rel="stylesheet" type="text/css" href="../_static/basic.css?v=eeb27264" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+    <link rel="stylesheet" type="text/css" href="../_static/amberNewFmt.css?v=ef17bba9" />
+    <link rel="stylesheet" type="text/css" href="../_static/default.css?v=cde477a7" />
+    <link rel="stylesheet" type="text/css" href="../_static/tutorial.css?v=cde477a7" />
+    <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/3Dmol/2.0.1/3Dmol-min.js"></script>
+    <script src="../_static/design-tabs.js?v=36754332"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Minimization" href="minimization.html" />
+    <link rel="prev" title="Visualizing the trajectories with Python" href="../vacuum/visualization_nglview.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="minimization.html" title="Minimization"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../vacuum/visualization_nglview.html" title="Visualizing the trajectories with Python"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">Amber DNA Solvation Tutorial  documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Running Minimization and Molecular Dynamics in implicit solvent</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+          <div class="body" role="main">
+          <div class="content">
+            
+  <section id="running-minimization-and-molecular-dynamics-in-implicit-solvent">
+<h1>Running Minimization and Molecular Dynamics in implicit solvent<a class="headerlink" href="#running-minimization-and-molecular-dynamics-in-implicit-solvent" title="Link to this heading">¶</a></h1>
+<p>In the previous section, we saw the problems associated with running Molecular Dynamics in vacuo, namely that for biomolecular systems, which exist in a solvated environment, it does not accurately represent the system.
+One solution to this is to use explicit solvent, which is the subject of the last section in this tutorial.
+Using explicit solvent, however, can be computationally expensive.
+In some cases, solvent effects within the force field equations.
+This approach is termed implicit solvent.
+An excellent implicit solvent method currently implemented in Sander is the Born solvation model</p>
+<p>Reference:
+[V. Tsui &amp; D.A. Case, Biopolymers (Nucl. Acid. Sci.) 56, 275-291 (2001)](<a class="reference external" href="https://pubmed.ncbi.nlm.nih.gov/11754341/">https://pubmed.ncbi.nlm.nih.gov/11754341/</a>).</p>
+<p>Recent Review:
+[A. Onufriev &amp; D.A. Case, Annu Rev Biophys. 48, 275-296 (2019)](<a class="reference external" href="https://pubmed.ncbi.nlm.nih.gov/30857399/">https://pubmed.ncbi.nlm.nih.gov/30857399/</a>)</p>
+<p>For more information on implicit solvent, see Section 4 of the [Amber Manual](<a class="reference external" href="https://ambermd.org/Manuals.php">https://ambermd.org/Manuals.php</a>) (page 69 in the [Amber 2023 manual](<a class="reference external" href="http://ambermd.org/doc12/Amber23.pdf">http://ambermd.org/doc12/Amber23.pdf</a>)).</p>
+<p>Use of the Born solvation model is controlled by the <cite>IGB</cite> flag.
+The default value for this flag is 0 which corresponds to no generalized Born term being used.
+For further details see the AMBER manual.</p>
+<p>In this example, we shall re-run our <em>in vacuo</em> simulations using <cite>IGB=1</cite> Born solvation model.</p>
+<p><strong>CAUTION</strong> This is not necessarily the recommended solvent model for nucleic acids.
+If you are performing a simulation for nucleic acids, you should check the most recent Amber manual for recommended forcefields and solvent models.
+The simulations in this tutorial are illustrative and meant to demonstrate the effect of solvent model.</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="minimization.html">Minimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="simulation.html">Running MD with Generalized Born Solvation</a></li>
+</ul>
+</div>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="minimization.html" title="Minimization"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../vacuum/visualization_nglview.html" title="Visualizing the trajectories with Python"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">Amber DNA Solvation Tutorial  documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Running Minimization and Molecular Dynamics in implicit solvent</a></li> 
+      </ul>
+    </div>
+  </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright .
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    </div>
+  </body>
+</html>

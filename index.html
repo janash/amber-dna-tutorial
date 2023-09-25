@@ -48,8 +48,8 @@
 <h1>Simulating DNA with Different Solvation Models<a class="headerlink" href="#simulating-dna-with-different-solvation-models" title="Link to this heading">¶</a></h1>
 <section id="overview">
 <h2>Overview<a class="headerlink" href="#overview" title="Link to this heading">¶</a></h2>
-<p>The purpose of this tutorial is to provide an introduction to setting up and running simulations using the AMBER software.</p>
-<p>It is based on AMBER 23 and AmberTools 23 but should be used with the most recent version of Amber available.
+<p>The purpose of this tutorial is to provide an introduction to setting up and running simulations using the AMBER software, and to explore the effect of solvation conditions and cut offs on DNA structures observed in molecular dynamics simulations.
+It is based on AMBER 23 and AmberTools 23 but should be used with the most recent version of Amber available.
 In this tutorial we run a series of simulations on the Dickerson dodecamer, a well known DNA structure.
 We will first figure out how to generate a starting structure and then use this structure to construct the necessary input files for running sander,
 the molecular dynamics engine supplied with AmberTools.</p>
@@ -95,6 +95,11 @@ solvent conditions.:</p>
 <li class="toctree-l2"><a class="reference internal" href="vacuum/analysis.html">Analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="vacuum/visualization_vmd.html">Visualizing the trajectories with VMD</a></li>
 <li class="toctree-l2"><a class="reference internal" href="vacuum/visualization_nglview.html">Visualizing the trajectories with Python</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="implicit/index.html">Running Minimization and Molecular Dynamics in implicit solvent</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="implicit/minimization.html">Minimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="implicit/simulation.html">Running MD with Generalized Born Solvation</a></li>
 </ul>
 </li>
 </ul>

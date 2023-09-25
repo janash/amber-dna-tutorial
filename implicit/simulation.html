@@ -1,0 +1,144 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Running MD with Generalized Born Solvation &#8212; Amber DNA Solvation Tutorial  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+    <link rel="stylesheet" type="text/css" href="../_static/basic.css?v=eeb27264" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+    <link rel="stylesheet" type="text/css" href="../_static/amberNewFmt.css?v=ef17bba9" />
+    <link rel="stylesheet" type="text/css" href="../_static/default.css?v=cde477a7" />
+    <link rel="stylesheet" type="text/css" href="../_static/tutorial.css?v=cde477a7" />
+    <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/3Dmol/2.0.1/3Dmol-min.js"></script>
+    <script src="../_static/design-tabs.js?v=36754332"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Minimization" href="minimization.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="minimization.html" title="Minimization"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">Amber DNA Solvation Tutorial  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Running Minimization and Molecular Dynamics in implicit solvent</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Running MD with Generalized Born Solvation</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+          <div class="body" role="main">
+          <div class="content">
+            
+  <section id="running-md-with-generalized-born-solvation">
+<h1>Running MD with Generalized Born Solvation<a class="headerlink" href="#running-md-with-generalized-born-solvation" title="Link to this heading">¶</a></h1>
+<p>In section 3.2 we used sander to run molecular dynamics of our in vacuo DNA 10-mer. We noted that the results were very susceptible to the long range cut off, with no cut off giving us an unraveling of the DNA and subsequent crash of the sander MD program. This instability was attributed to the in vacuo simulation not representing reality correctly. In this section we will re-run the two simulations using the Born implicit solvent models. The two input files we require are:</p>
+<ol class="arabic simple">
+<li><p><a class="reference download internal" download="" href="../_downloads/27dfb75c83866a6bbd7dee4cf6c7e3bb/dodecamer_gb_md1_12Acut.mdin"><code class="xref download docutils literal notranslate"><span class="pre">dodecamer_gb_md1_12Acut.mdin</span></code></a></p></li>
+<li><p><a class="reference download internal" download="" href="../_downloads/ffbbdfba7037764d121e2729d6c397e0/dodecamer_gb_md1_nocut.mdin"><code class="xref download docutils literal notranslate"><span class="pre">dodecamer_gb_md1_nocut.mdin</span></code></a></p></li>
+</ol>
+<p>We are using the same settings as before, namely we turn off minimization (<code class="docutils literal notranslate"><span class="pre">IMIN=0</span></code>).
+We disable periodicity (<code class="docutils literal notranslate"><span class="pre">NTB=0</span></code>) but this time set <code class="docutils literal notranslate"><span class="pre">IGB=1</span></code> since we want to use the Born implicit solvent model.
+We will again write information to the output file and trajectory coordinates file every 100 steps (<code class="docutils literal notranslate"><span class="pre">NTPR=100</span></code>, <code class="docutils literal notranslate"><span class="pre">NTWX=100</span></code>).
+Two different values for the cutoff will be used, one run will be with a cutoff of 12 angstroms (<code class="docutils literal notranslate"><span class="pre">CUT</span> <span class="pre">=</span> <span class="pre">12.0</span></code>) and one run will be without a cutoff (<code class="docutils literal notranslate"><span class="pre">CUT</span> <span class="pre">=</span> <span class="pre">999</span></code>).
+For temperature regulation we will use the Langevin thermostat (NTT=3, GAMMA_LN=1) to maintain the temperature of our system at 300 K.</p>
+<p>We shall also set the initial and final temperatures to 300 K (T<code class="docutils literal notranslate"><span class="pre">EMPI=300.0</span></code>, <code class="docutils literal notranslate"><span class="pre">TEMP0=300.0</span></code>) which will mean our system’s temperature should remain around 300 K. Again we will run the two examples for a total of 100,000 steps each (<code class="docutils literal notranslate"><span class="pre">NSTLIM=100000</span></code>) with a 1 fs time step (<code class="docutils literal notranslate"><span class="pre">DT=0.001</span></code>) giving simulation lengths of 100 ps (100,000 x 1fs).
+The two input files are shown below:</p>
+<div class="sd-tab-set docutils">
+<input checked="checked" id="sd-tab-item-0" name="sd-tab-set-0" type="radio">
+</input><label class="sd-tab-label" data-sync-id="tabcode-dodecamer_gb_md1_12Acut.mdin" for="sd-tab-item-0">
+DODECAMER_GB_MD1_12ACUT.MDIN</label><div class="sd-tab-content docutils">
+<div class="highlight-dodecamer_gb_md1_12Acut.mdin notranslate"><div class="highlight"><pre><span></span>dodecamer DNA MD Generalise Born, 12A cut off
+ &amp;cntrl
+  imin = 0, ntb = 0,
+  igb = 1, ntpr = 100, ntwx = 100,
+  ntt = 3, gamma_ln = 1.0,
+  tempi = 300.0, temp0 = 300.0,
+  nstlim = 100000, dt = 0.001,
+  cut = 12
+ /
+</pre></div>
+</div>
+</div>
+</div>
+<div class="sd-tab-set docutils">
+<input checked="checked" id="sd-tab-item-1" name="sd-tab-set-1" type="radio">
+</input><label class="sd-tab-label" data-sync-id="tabcode-dodecamer_gb_md1_nocut.mdin" for="sd-tab-item-1">
+DODECAMER_GB_MD1_NOCUT.MDIN</label><div class="sd-tab-content docutils">
+<div class="highlight-dodecamer_gb_md1_nocut.mdin notranslate"><div class="highlight"><pre><span></span>dodecamer DNA MD Generalise Born, no cut off
+ &amp;cntrl
+  imin = 0, ntb = 0,
+  igb = 1, ntpr = 100, ntwx = 100,
+  ntt = 3, gamma_ln = 1.0,
+  tempi = 300.0, temp0 = 300.0,
+  nstlim = 100000, dt = 0.001,
+  cut = 999
+ /
+</pre></div>
+</div>
+</div>
+</div>
+<p>As mentioned in the previous section when running production simulations with ntt=2 or 3 you should always change the random seed (<code class="docutils literal notranslate"><span class="pre">ig</span></code>) between restarts.
+You can achieve this automatically by setting <code class="docutils literal notranslate"><span class="pre">ig=-1</span></code> in the ctrl namelist.
+We do not do this here in the tutorial for reproducibility but it is generally recommended that you do this in your calculations.
+We now run the two jobs, remembering to set our starting structures to the minimized structure from 4.1 above (<code class="docutils literal notranslate"><span class="pre">dodecamerT_gb_init_min.ncrst</span></code>), using the commands:</p>
+<div class="sd-tab-set docutils">
+<input checked="checked" id="sd-tab-item-2" name="sd-tab-set-2" type="radio">
+</input><label class="sd-tab-label" data-sync-id="tabcode-bash" for="sd-tab-item-2">
+BASH</label><div class="sd-tab-content docutils">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sander<span class="w"> </span>-O<span class="w"> </span>-i<span class="w"> </span>dodecamer_gb_md1_12Acut.mdin<span class="w"> </span>-o<span class="w"> </span>dodecamer_gb_md1_12Acut.out<span class="w"> </span>-c<span class="w"> </span>dodecamer_gb_init_min.ncrst<span class="w"> </span>-p<span class="w"> </span>dodecamer_vac.prmtop<span class="w"> </span>-r<span class="w"> </span>dodecamer_gb_md1_12Acut.ncrst<span class="w"> </span>-x<span class="w"> </span>dodecamer_gb_md1_12Acut.nc<span class="w"> </span>-inf<span class="w"> </span>cut.mdinfo<span class="w"> </span><span class="p">&amp;</span>
+sander<span class="w"> </span>-O<span class="w"> </span>-i<span class="w"> </span>dodecamer_gb_md1_nocut.mdin<span class="w"> </span>-o<span class="w"> </span>dodecamer_gb_md1_nocut.out<span class="w"> </span>-c<span class="w"> </span>dodecamer_gb_init_min.ncrst<span class="w"> </span>-p<span class="w"> </span>dodecamer_vac.prmtop<span class="w"> </span>-r<span class="w"> </span>dodecamer_gb_md1_nocut.ncrst<span class="w"> </span>-x<span class="w"> </span>dodecamer_gb_md1_nocut.nc<span class="w"> </span>-inf<span class="w"> </span>nocut.mdinfo<span class="w"> </span><span class="p">&amp;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Note: These will take considerably longer to run than <em>in vacuo</em> MD did. The 12 angstrom cut-off takes about 25 minutes to run on an 3.00 GHz i7 machine.
+If you’d like, you can download the trajectories below instead of running them:</p>
+<ol class="arabic simple">
+<li><p><a class="reference download internal" download="" href="../_downloads/bda35096fea4d9be11387f49de747c18/dodecamer_gb_md1_12Acut.nc"><code class="xref download docutils literal notranslate"><span class="pre">12</span> <span class="pre">A</span> <span class="pre">cut</span> <span class="pre">trajectory</span></code></a> / <a class="reference download internal" download="" href="../_downloads/f494218531d71513c56b0afa4d0526d6/dodecamer_gb_md1_12Acut.out"><code class="xref download docutils literal notranslate"><span class="pre">12</span> <span class="pre">A</span> <span class="pre">cut</span> <span class="pre">outfile</span></code></a>,</p></li>
+<li><p><a class="reference download internal" download="" href="../_downloads/8768404eac303ec0c4d1e783ec518878/dodecamer_gb_md1_nocut.nc"><code class="xref download docutils literal notranslate"><span class="pre">No</span> <span class="pre">cutoff</span> <span class="pre">trajectory</span></code></a>/ <a class="reference download internal" download="" href="../_downloads/ee009f8cba95df7c17e3c9e7489730da/dodecamer_gb_md1_nocut.out"><code class="xref download docutils literal notranslate"><span class="pre">No</span> <span class="pre">cutoff</span> <span class="pre">outfile</span></code></a>,</p></li>
+</ol>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="minimization.html" title="Minimization"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">Amber DNA Solvation Tutorial  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" >Running Minimization and Molecular Dynamics in implicit solvent</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Running MD with Generalized Born Solvation</a></li> 
+      </ul>
+    </div>
+  </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright .
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    </div>
+  </body>
+</html>
