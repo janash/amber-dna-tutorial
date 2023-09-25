@@ -42,3 +42,4 @@ Table of Contents
 
    system_build
    vacuum/index
+   implicit/index
