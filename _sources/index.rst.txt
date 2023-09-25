@@ -22,13 +22,18 @@ solvent conditions.:
 3. DNA in implicit solvent.
 4. DNA in explicit solvent with ions.
 
-Learning Objectives
+Learning Outcomes
 -------------------
 
-* Learning Objective 1
-* Learning Objective 2
+After completing this tutorial, you will be able to
 
-
+* Use `tleap` to prepare vacuum and solvated simulated systems.
+* Be able to explain the choice of periodic box shape (`box` vs. `oct`) when preparing solvated systems.
+* Run minimization, vacuum, implicit solvent, and explicit solvent simulations of DNA using sander.
+* Analyze energies. RMSD, and trajectory movies to assess simulations.
+* Create plots with xmgrace or Python.
+* Visualize simulation trajectories using VMD or Python and pytraj.
+* Explain the effect of solvent conditions and cut-off on simulation of DNA.
 
 Table of Contents
 ------------------
