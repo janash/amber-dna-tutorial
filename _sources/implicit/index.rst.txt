@@ -31,3 +31,4 @@ The simulations in this tutorial are illustrative and meant to demonstrate the e
 
    minimization
    simulation
+   analysis
