@@ -37,7 +37,10 @@ The following set of commands can be typed into `cpptraj` to strip the solvent f
 The `parm 1bna.pdb` reads the PDB as an Amber topology file.
 The line `trajin 1bna.pdb` reads in the coordinates of the PDB file.
 The line `strip !:1-24` strips everything but residues
-`1-24`, and `trajout dna_only.pdb`
+`1-24`. 
+We are simulating the Dickerson dodecamer. 
+This is a double helix DNA structure with 12 base pairs (12 base pairs = 24 bases = 24 residues).
+We then save a new PDB file containing only DNA using `trajout dna_only.pdb`
 
 `````{tab-set} 
 
@@ -52,6 +55,8 @@ go
 ````
 
 `````
+
+You can quit `cpptraj` by typing `quit`.
 
 ## Creating prmtop and inpcrd Files for Vacuum System
 

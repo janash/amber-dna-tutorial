@@ -80,7 +80,10 @@ shell</label><div class="sd-tab-content docutils">
 The <code class="docutils literal notranslate"><span class="pre">parm</span> <span class="pre">1bna.pdb</span></code> reads the PDB as an Amber topology file.
 The line <code class="docutils literal notranslate"><span class="pre">trajin</span> <span class="pre">1bna.pdb</span></code> reads in the coordinates of the PDB file.
 The line <code class="docutils literal notranslate"><span class="pre">strip</span> <span class="pre">!:1-24</span></code> strips everything but residues
-<code class="docutils literal notranslate"><span class="pre">1-24</span></code>, and <code class="docutils literal notranslate"><span class="pre">trajout</span> <span class="pre">dna_only.pdb</span></code></p>
+<code class="docutils literal notranslate"><span class="pre">1-24</span></code>.
+We are simulating the Dickerson dodecamer.
+This is a double helix DNA structure with 12 base pairs (12 base pairs = 24 bases = 24 residues).
+We then save a new PDB file containing only DNA using <code class="docutils literal notranslate"><span class="pre">trajout</span> <span class="pre">dna_only.pdb</span></code></p>
 <div class="sd-tab-set docutils">
 <input checked="checked" id="sd-tab-item-1" name="sd-tab-set-1" type="radio">
 </input><label class="sd-tab-label" for="sd-tab-item-1">
@@ -94,6 +97,7 @@ go
 </div>
 </div>
 </div>
+<p>You can quit <code class="docutils literal notranslate"><span class="pre">cpptraj</span></code> by typing <code class="docutils literal notranslate"><span class="pre">quit</span></code>.</p>
 </section>
 </section>
 <section id="creating-prmtop-and-inpcrd-files-for-vacuum-system">
