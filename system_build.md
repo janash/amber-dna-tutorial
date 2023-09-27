@@ -16,18 +16,22 @@ We will strip water and ion molecules from this structure, then use `tleap`
 to load forcefields and create Amber topology and coordinate files.
 
 ### Isolating DNA using `cpptraj`
-Start cpptraj by executing the command `cpptraj` in your terminal:
 
 The DNA structure we've obtained from the Protein Data Bank contains some water molecules.
+To do our simulations, we will want to remove these water molecules so that we can either simulate in vaccum or add our own solvent box.
 We will use `cpptraj` to strip out the water molecules.
+`cpptraj` is a program that is part of the AmberTools suite that is used for processing an analyzing trajectories and coordinates.
 Start `cpptraj` by typing its name into your terminal.
 
-````{tab-set-code} 
+`````{tab-set} 
 
-```{code-block} shell
+````{tab-item} shell
+```
 cpptraj
 ```
 ````
+
+`````
 
 The following set of commands can be typed into `cpptraj` to strip the solvent from the PDB file.
 The `parm 1bna.pdb` reads the PDB as an Amber topology file.
@@ -35,9 +39,10 @@ The line `trajin 1bna.pdb` reads in the coordinates of the PDB file.
 The line `strip !:1-24` strips everything but residues
 `1-24`, and `trajout dna_only.pdb`
 
-````{tab-set-code} 
+`````{tab-set} 
 
-```{code-block} cpptraj
+````{tab-item} cpptraj
+```
 parm 1bna.pdb
 trajin 1bna.pdb
 strip !:1-24
@@ -45,6 +50,8 @@ trajout dna_only.pdb
 go
 ```
 ````
+
+`````
 
 ## Creating prmtop and inpcrd Files for Vacuum System
 
@@ -55,12 +62,15 @@ You will use the `prmtop` file for every simulation of the DNA vacuum system you
 The `inpcrd` file will contain the initial coordinates for your simulation system.
 Type `tleap` into your terminal to open `tleap`.
 
-````{tab-set-code} 
+`````{tab-set} 
 
-```{code-block} shell
+````{tab-item} shell
+```
 tleap
 ```
 ````
+
+`````
 
 The following commands load the appropriate forcefields.
 As of the writing of this tutorial (Sept 2023), 
@@ -70,30 +80,34 @@ It is loaded into `tleap` using `source leaprc.DNA.OL21`.
 The `loadpdb` command followed by our PDB name loads in the DNA structure we created with leap in the previous step, saved in a variable called `dna`.
 In the last step, the `prmtop` and the `inpcrd` files for our system are saved.
 
-````{tab-set-code} 
+`````{tab-set} 
 
-```{code-block} tleap
+````{tab-item} tleap
+```
 source leaprc.DNA.OL21 
 dna = loadpdb dna_only.pdb
 saveamberparm dna dodecamer_vac.prmtop dodecamer_vac.inpcrd
 quit
 ```
 ````
+`````
 
 You can type this all into `tleap`, or you can create a `leap.in` file that contains the text in the block above.
 If you create a `leap.in`, you run tleap with the input file using
 
-````{tab-set-code} 
-```{code-block} bash
+`````{tab-set-code} 
+````{tab-item} shell
+```
 tleap -f leap.in
 ```
 ````
+`````
 
 After running the commands above, you will see an output similar to the following:
 
-````{tab-set-code} 
-```{code-block} output
-
+`````{tab-set} 
+````{tab-item} output
+```
 -I: Adding AMBERHOME/dat/leap/prep to search path.
 -I: Adding AMBERHOME/dat/leap/lib to search path.
 -I: Adding AMBERHOME/dat/leap/parm to search path.
@@ -139,6 +153,7 @@ Marking per-residue atom chain types.
 
 ```
 ````
+`````
 
 The output tells us what forcefields we have loaded and the name of our PDB file.
 The output gives us some information about what happened when the file was loaded:
@@ -179,10 +194,11 @@ data-style: ball+stick
 After building the vacuum system, we will make a second system that is solvated with water and ions.
 For our solvated system, we will load an additional `frcmod` file containing parameters for OPC water and associated ions.
 The OPC water file loads [Li and Merz 12-6 ions](https://ambermd.org/AmberModels_ions.php).
-For demonstration purposes, we will create a `prmotop`  and `inpcrd` with only ions (no water) first.
+For demonstration purposes, we will create a `prmtop`  and `inpcrd` with only ions (no water) first.
 
-````{tab-set-code}
-```{code-block} leap_solv.in
+`````{tab-set}
+````{tab-item} leap_ions.in
+```
 source leaprc.DNA.OL21
 source leaprc.water.opc 
 dna = loadpdb dna_only.pdb
@@ -191,14 +207,18 @@ saveamberparm dna dodecamer_ions.prmtop dodecamer_ions.inpcrd
 quit
 ```
 ````
+`````
+
 
 You can run tleap using this input file in your terminal
 
-````{tab-set-code} 
-```{code-block} bash
+`````{tab-set} 
+````{tab-item} bash
+```bash
 tleap -f leap_ions.in
 ```
 ````
+`````
 
 From this output, you will see that `tleap` has added 22 ions to our system.
 The command `addions Na+ 0` adds enough ions to neutralize the system.
@@ -226,7 +246,7 @@ height: 300px
 data-style: ball+stick
 ```
 
-The box built by `tleap`` is not cubic since DNA is a cylindrical molecule (it is rectangular). 
+The box built by `tleap` is not cubic since DNA is a cylindrical molecule (it is rectangular). 
 An issue here is that the long axis of DNA could rotate (via self diffusion) such that the long axis was along the short box dimension which will, since this box will be infinitely repeated in space by the periodic boundary method, bring the ends of the DNA near their periodic images. 
 One way to get around this would be to make the box cubic by specifying a list of numbers to the solvateBox command to force this to be cubic. 
 However, this will add significantly more water to the calculation and slow it down tremendously. 
@@ -248,8 +268,9 @@ To add a truncated octahedral box of water around our DNA we use the `solvateoct
 Our leap input would look like the following:
 
 
-````{tab-set-code} 
-```{code-block} leap_solv.in
+`````{tab-set} 
+````{tab-item} leap_solv.in
+```
 source leaprc.DNA.OL21
 source leaprc.water.opc 
 dna = loadpdb dna_only.pdb
@@ -259,6 +280,18 @@ saveamberparm dna dodecamer_solv.prmtop dodecamer_solv.inpcrd
 quit
 ```
 ````
+`````
+
+You can run tleap to build the system using
+
+`````{tab-set} 
+````{tab-item} shell
+```shell
+tleap -f leap_solv.in
+```
+````
+`````
+
 Now we have input files for our DNA in an octahedral solvent box.
 You can see a visualization of this system below.
 
