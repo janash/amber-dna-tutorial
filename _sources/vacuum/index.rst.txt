@@ -7,9 +7,9 @@ For this section of the tutorial we shall be using the in vacuo prmtop and inpcr
 
 This section of the tutorial will consist of 3 stages:
 
-Relaxing the system prior to MD
-Molecular dynamics at constant temperature
-Analyzing the results
+* Relaxing the system prior to MD
+* Molecular dynamics at constant temperature
+* Analyzing the results
 
 .. toctree::
    :maxdepth: 2
