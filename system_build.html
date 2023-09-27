@@ -62,15 +62,16 @@ We will strip water and ion molecules from this structure, then use <code class=
 to load forcefields and create Amber topology and coordinate files.</p>
 <section id="isolating-dna-using-cpptraj">
 <h3>Isolating DNA using <code class="docutils literal notranslate"><span class="pre">cpptraj</span></code><a class="headerlink" href="#isolating-dna-using-cpptraj" title="Link to this heading">¶</a></h3>
-<p>Start cpptraj by executing the command <code class="docutils literal notranslate"><span class="pre">cpptraj</span></code> in your terminal:</p>
 <p>The DNA structure we’ve obtained from the Protein Data Bank contains some water molecules.
+To do our simulations, we will want to remove these water molecules so that we can either simulate in vaccum or add our own solvent box.
 We will use <code class="docutils literal notranslate"><span class="pre">cpptraj</span></code> to strip out the water molecules.
+<code class="docutils literal notranslate"><span class="pre">cpptraj</span></code> is a program that is part of the AmberTools suite that is used for processing an analyzing trajectories and coordinates.
 Start <code class="docutils literal notranslate"><span class="pre">cpptraj</span></code> by typing its name into your terminal.</p>
 <div class="sd-tab-set docutils">
 <input checked="checked" id="sd-tab-item-0" name="sd-tab-set-0" type="radio">
-</input><label class="sd-tab-label" data-sync-id="tabcode-shell" for="sd-tab-item-0">
-SHELL</label><div class="sd-tab-content docutils">
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>cpptraj
+</input><label class="sd-tab-label" for="sd-tab-item-0">
+shell</label><div class="sd-tab-content docutils">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cpptraj</span>
 </pre></div>
 </div>
 </div>
@@ -82,9 +83,9 @@ The line <code class="docutils literal notranslate"><span class="pre">strip</spa
 <code class="docutils literal notranslate"><span class="pre">1-24</span></code>, and <code class="docutils literal notranslate"><span class="pre">trajout</span> <span class="pre">dna_only.pdb</span></code></p>
 <div class="sd-tab-set docutils">
 <input checked="checked" id="sd-tab-item-1" name="sd-tab-set-1" type="radio">
-</input><label class="sd-tab-label" data-sync-id="tabcode-cpptraj" for="sd-tab-item-1">
-CPPTRAJ</label><div class="sd-tab-content docutils">
-<div class="highlight-cpptraj notranslate"><div class="highlight"><pre><span></span>parm 1bna.pdb
+</input><label class="sd-tab-label" for="sd-tab-item-1">
+cpptraj</label><div class="sd-tab-content docutils">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>parm 1bna.pdb
 trajin 1bna.pdb
 strip !:1-24
 trajout dna_only.pdb
@@ -105,9 +106,9 @@ The <code class="docutils literal notranslate"><span class="pre">inpcrd</span></
 Type <code class="docutils literal notranslate"><span class="pre">tleap</span></code> into your terminal to open <code class="docutils literal notranslate"><span class="pre">tleap</span></code>.</p>
 <div class="sd-tab-set docutils">
 <input checked="checked" id="sd-tab-item-2" name="sd-tab-set-2" type="radio">
-</input><label class="sd-tab-label" data-sync-id="tabcode-shell" for="sd-tab-item-2">
-SHELL</label><div class="sd-tab-content docutils">
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>tleap
+</input><label class="sd-tab-label" for="sd-tab-item-2">
+shell</label><div class="sd-tab-content docutils">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tleap</span>
 </pre></div>
 </div>
 </div>
@@ -120,12 +121,12 @@ It is loaded into <code class="docutils literal notranslate"><span class="pre">t
 In the last step, the <code class="docutils literal notranslate"><span class="pre">prmtop</span></code> and the <code class="docutils literal notranslate"><span class="pre">inpcrd</span></code> files for our system are saved.</p>
 <div class="sd-tab-set docutils">
 <input checked="checked" id="sd-tab-item-3" name="sd-tab-set-3" type="radio">
-</input><label class="sd-tab-label" data-sync-id="tabcode-tleap" for="sd-tab-item-3">
-TLEAP</label><div class="sd-tab-content docutils">
-<div class="highlight-tleap notranslate"><div class="highlight"><pre><span></span>source leaprc.DNA.OL21 
-dna = loadpdb dna_only.pdb
-saveamberparm dna dodecamer_vac.prmtop dodecamer_vac.inpcrd
-quit
+</input><label class="sd-tab-label" for="sd-tab-item-3">
+tleap</label><div class="sd-tab-content docutils">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">source</span> <span class="n">leaprc</span><span class="o">.</span><span class="n">DNA</span><span class="o">.</span><span class="n">OL21</span> 
+<span class="n">dna</span> <span class="o">=</span> <span class="n">loadpdb</span> <span class="n">dna_only</span><span class="o">.</span><span class="n">pdb</span>
+<span class="n">saveamberparm</span> <span class="n">dna</span> <span class="n">dodecamer_vac</span><span class="o">.</span><span class="n">prmtop</span> <span class="n">dodecamer_vac</span><span class="o">.</span><span class="n">inpcrd</span>
+<span class="n">quit</span>
 </pre></div>
 </div>
 </div>
@@ -133,61 +134,55 @@ quit
 <p>You can type this all into <code class="docutils literal notranslate"><span class="pre">tleap</span></code>, or you can create a <code class="docutils literal notranslate"><span class="pre">leap.in</span></code> file that contains the text in the block above.
 If you create a <code class="docutils literal notranslate"><span class="pre">leap.in</span></code>, you run tleap with the input file using</p>
 <div class="sd-tab-set docutils">
-<input checked="checked" id="sd-tab-item-4" name="sd-tab-set-4" type="radio">
-</input><label class="sd-tab-label" data-sync-id="tabcode-bash" for="sd-tab-item-4">
-BASH</label><div class="sd-tab-content docutils">
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>tleap<span class="w"> </span>-f<span class="w"> </span>leap.in
-</pre></div>
-</div>
-</div>
 </div>
 <p>After running the commands above, you will see an output similar to the following:</p>
 <div class="sd-tab-set docutils">
-<input checked="checked" id="sd-tab-item-5" name="sd-tab-set-5" type="radio">
-</input><label class="sd-tab-label" data-sync-id="tabcode-output" for="sd-tab-item-5">
-OUTPUT</label><div class="sd-tab-content docutils">
-<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">-I: Adding AMBERHOME/dat/leap/prep to search path.</span>
-<span class="go">-I: Adding AMBERHOME/dat/leap/lib to search path.</span>
-<span class="go">-I: Adding AMBERHOME/dat/leap/parm to search path.</span>
-<span class="go">-I: Adding AMBERHOME/dat/leap/cmd to search path.</span>
-<span class="go">-f: Source leap_vac.in.</span>
+<input checked="checked" id="sd-tab-item-4" name="sd-tab-set-5" type="radio">
+</input><label class="sd-tab-label" for="sd-tab-item-4">
+output</label><div class="sd-tab-content docutils">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>-I: Adding AMBERHOME/dat/leap/prep to search path.
+-I: Adding AMBERHOME/dat/leap/lib to search path.
+-I: Adding AMBERHOME/dat/leap/parm to search path.
+-I: Adding AMBERHOME/dat/leap/cmd to search path.
+-f: Source leap_vac.in.
 
-<span class="go">Welcome to LEaP!</span>
-<span class="go">(no leaprc in search path)</span>
-<span class="go">Sourcing: ./leap_vac.in</span>
-<span class="go">----- Source: AMBERHOME/dat/leap/cmd/leaprc.DNA.OL21</span>
-<span class="go">----- Source of AMBERHOME/dat/leap/cmd/leaprc.DNA.OL21 done</span>
-<span class="go">Log file: ./leap.log</span>
-<span class="go">Loading library: AMBERHOME/dat/leap/lib/ff-nucleic-OL21.lib</span>
-<span class="go">Loading parameters: AMBERHOME/dat/leap/parm/parm10.dat</span>
-<span class="go">Reading title:</span>
-<span class="go">PARM99 + frcmod.ff99SB + frcmod.parmbsc0 + OL3 for RNA</span>
-<span class="go">Loading parameters: AMBERHOME/dat/leap/parm/ff-nucleic-OL21.frcmod</span>
-<span class="go">Reading force field modification type file (frcmod)</span>
-<span class="go">Reading title:</span>
-<span class="go">OL21 force field for DNA (OL15 + alpha/gamma OL21), see http://ffol.upol.cz</span>
-<span class="go">Loading PDB file: ./dna_only.pdb</span>
-<span class="go">  total atoms in file: 486</span>
-<span class="go">  Leap added 272 missing atoms according to residue templates:</span>
-<span class="go">       272 H / lone pairs</span>
-<span class="go">Checking Unit.</span>
+Welcome to LEaP!
+(no leaprc in search path)
+Sourcing: ./leap_vac.in
+----- Source: AMBERHOME/dat/leap/cmd/leaprc.DNA.OL21
+----- Source of AMBERHOME/dat/leap/cmd/leaprc.DNA.OL21 done
+Log file: ./leap.log
+Loading library: AMBERHOME/dat/leap/lib/ff-nucleic-OL21.lib
+Loading parameters: AMBERHOME/dat/leap/parm/parm10.dat
+Reading title:
+PARM99 + frcmod.ff99SB + frcmod.parmbsc0 + OL3 for RNA
+Loading parameters: AMBERHOME/dat/leap/parm/ff-nucleic-OL21.frcmod
+Reading force field modification type file (frcmod)
+Reading title:
+OL21 force field for DNA (OL15 + alpha/gamma OL21), see http://ffol.upol.cz
+Loading PDB file: ./dna_only.pdb
+  total atoms in file: 486
+  Leap added 272 missing atoms according to residue templates:
+       272 H / lone pairs
+Checking Unit.
 
-<span class="go">Warning: The unperturbed charge of the unit (-22.000000) is not zero.</span>
+Warning: The unperturbed charge of the unit (-22.000000) is not zero.
 
-<span class="go">Note: Ignoring the warning from Unit Checking.</span>
+Note: Ignoring the warning from Unit Checking.
 
-<span class="go">Building topology.</span>
-<span class="go">Building atom parameters.</span>
-<span class="go">Building bond parameters.</span>
-<span class="go">Building angle parameters.</span>
-<span class="go">Building proper torsion parameters.</span>
-<span class="go">Building improper torsion parameters.</span>
-<span class="go"> total 260 improper torsions applied</span>
-<span class="go">Building H-Bond parameters.</span>
-<span class="go">Incorporating Non-Bonded adjustments.</span>
-<span class="go">Not Marking per-residue atom chain types.</span>
-<span class="go">Marking per-residue atom chain types.</span>
-<span class="go"> (no restraints)</span>
+Building topology.
+Building atom parameters.
+Building bond parameters.
+Building angle parameters.
+Building proper torsion parameters.
+Building improper torsion parameters.
+ total 260 improper torsions applied
+Building H-Bond parameters.
+Incorporating Non-Bonded adjustments.
+Not Marking per-residue atom chain types.
+Marking per-residue atom chain types.
+ (no restraints)
+
 </pre></div>
 </div>
 </div>
@@ -219,26 +214,26 @@ Click and rotate to view.</p>
 <p>After building the vacuum system, we will make a second system that is solvated with water and ions.
 For our solvated system, we will load an additional <code class="docutils literal notranslate"><span class="pre">frcmod</span></code> file containing parameters for OPC water and associated ions.
 The OPC water file loads <a class="reference external" href="https://ambermd.org/AmberModels_ions.php">Li and Merz 12-6 ions</a>.
-For demonstration purposes, we will create a <code class="docutils literal notranslate"><span class="pre">prmotop</span></code>  and <code class="docutils literal notranslate"><span class="pre">inpcrd</span></code> with only ions (no water) first.</p>
+For demonstration purposes, we will create a <code class="docutils literal notranslate"><span class="pre">prmtop</span></code>  and <code class="docutils literal notranslate"><span class="pre">inpcrd</span></code> with only ions (no water) first.</p>
 <div class="sd-tab-set docutils">
-<input checked="checked" id="sd-tab-item-6" name="sd-tab-set-6" type="radio">
-</input><label class="sd-tab-label" data-sync-id="tabcode-leap_solv.in" for="sd-tab-item-6">
-LEAP_SOLV.IN</label><div class="sd-tab-content docutils">
-<div class="highlight-leap_solv.in notranslate"><div class="highlight"><pre><span></span>source leaprc.DNA.OL21
-source leaprc.water.opc 
-dna = loadpdb dna_only.pdb
-addions dna Na+ 0
-saveamberparm dna dodecamer_ions.prmtop dodecamer_ions.inpcrd
-quit
+<input checked="checked" id="sd-tab-item-5" name="sd-tab-set-6" type="radio">
+</input><label class="sd-tab-label" for="sd-tab-item-5">
+leap_ions.in</label><div class="sd-tab-content docutils">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">source</span> <span class="n">leaprc</span><span class="o">.</span><span class="n">DNA</span><span class="o">.</span><span class="n">OL21</span>
+<span class="n">source</span> <span class="n">leaprc</span><span class="o">.</span><span class="n">water</span><span class="o">.</span><span class="n">opc</span> 
+<span class="n">dna</span> <span class="o">=</span> <span class="n">loadpdb</span> <span class="n">dna_only</span><span class="o">.</span><span class="n">pdb</span>
+<span class="n">addions</span> <span class="n">dna</span> <span class="n">Na</span><span class="o">+</span> <span class="mi">0</span>
+<span class="n">saveamberparm</span> <span class="n">dna</span> <span class="n">dodecamer_ions</span><span class="o">.</span><span class="n">prmtop</span> <span class="n">dodecamer_ions</span><span class="o">.</span><span class="n">inpcrd</span>
+<span class="n">quit</span>
 </pre></div>
 </div>
 </div>
 </div>
 <p>You can run tleap using this input file in your terminal</p>
 <div class="sd-tab-set docutils">
-<input checked="checked" id="sd-tab-item-7" name="sd-tab-set-7" type="radio">
-</input><label class="sd-tab-label" data-sync-id="tabcode-bash" for="sd-tab-item-7">
-BASH</label><div class="sd-tab-content docutils">
+<input checked="checked" id="sd-tab-item-6" name="sd-tab-set-7" type="radio">
+</input><label class="sd-tab-label" for="sd-tab-item-6">
+bash</label><div class="sd-tab-content docutils">
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>tleap<span class="w"> </span>-f<span class="w"> </span>leap_ions.in
 </pre></div>
 </div>
@@ -252,7 +247,7 @@ Because we are simulating DNA, it will be necessary to use something besides a c
 Often, when solvating with <code class="docutils literal notranslate"><span class="pre">tleap</span></code>, we will use the <code class="docutils literal notranslate"><span class="pre">SOLVATEBOX</span></code> command.
 This command results in a rectangular box for DNA.
 Though this tutorial doesn’t require making a cubic box, consider the illustration of the solvated DNA system below.</p>
-<center><div style='height: 300px; width: 300px; position: relative;' class='viewer_3Dmoljs' data-href=pdbs/dna_rect_box.pdb data-backgroundcolor='white'  data-style=stick;sphere:radius~0.5 ></div></center><p>The box built by `tleap`` is not cubic since DNA is a cylindrical molecule (it is rectangular).
+<center><div style='height: 300px; width: 300px; position: relative;' class='viewer_3Dmoljs' data-href=pdbs/dna_rect_box.pdb data-backgroundcolor='white'  data-style=stick;sphere:radius~0.5 ></div></center><p>The box built by <code class="docutils literal notranslate"><span class="pre">tleap</span></code> is not cubic since DNA is a cylindrical molecule (it is rectangular).
 An issue here is that the long axis of DNA could rotate (via self diffusion) such that the long axis was along the short box dimension which will, since this box will be infinitely repeated in space by the periodic boundary method, bring the ends of the DNA near their periodic images.
 One way to get around this would be to make the box cubic by specifying a list of numbers to the solvateBox command to force this to be cubic.
 However, this will add significantly more water to the calculation and slow it down tremendously.
@@ -265,16 +260,26 @@ A more efficient shape to use, in terms of reducing the problem of solute rotati
 <p>To add a truncated octahedral box of water around our DNA we use the <code class="docutils literal notranslate"><span class="pre">solvateoct</span></code> command.
 Our leap input would look like the following:</p>
 <div class="sd-tab-set docutils">
-<input checked="checked" id="sd-tab-item-8" name="sd-tab-set-8" type="radio">
-</input><label class="sd-tab-label" data-sync-id="tabcode-leap_solv.in" for="sd-tab-item-8">
-LEAP_SOLV.IN</label><div class="sd-tab-content docutils">
-<div class="highlight-leap_solv.in notranslate"><div class="highlight"><pre><span></span>source leaprc.DNA.OL21
-source leaprc.water.opc 
-dna = loadpdb dna_only.pdb
-addions dna Na+ 0
-solvateoct dna OPCBOX 8.0
-saveamberparm dna dodecamer_solv.prmtop dodecamer_solv.inpcrd
-quit
+<input checked="checked" id="sd-tab-item-7" name="sd-tab-set-8" type="radio">
+</input><label class="sd-tab-label" for="sd-tab-item-7">
+leap_solv.in</label><div class="sd-tab-content docutils">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">source</span> <span class="n">leaprc</span><span class="o">.</span><span class="n">DNA</span><span class="o">.</span><span class="n">OL21</span>
+<span class="n">source</span> <span class="n">leaprc</span><span class="o">.</span><span class="n">water</span><span class="o">.</span><span class="n">opc</span> 
+<span class="n">dna</span> <span class="o">=</span> <span class="n">loadpdb</span> <span class="n">dna_only</span><span class="o">.</span><span class="n">pdb</span>
+<span class="n">addions</span> <span class="n">dna</span> <span class="n">Na</span><span class="o">+</span> <span class="mi">0</span>
+<span class="n">solvateoct</span> <span class="n">dna</span> <span class="n">OPCBOX</span> <span class="mf">8.0</span>
+<span class="n">saveamberparm</span> <span class="n">dna</span> <span class="n">dodecamer_solv</span><span class="o">.</span><span class="n">prmtop</span> <span class="n">dodecamer_solv</span><span class="o">.</span><span class="n">inpcrd</span>
+<span class="n">quit</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>You can run tleap to build the system using</p>
+<div class="sd-tab-set docutils">
+<input checked="checked" id="sd-tab-item-8" name="sd-tab-set-9" type="radio">
+</input><label class="sd-tab-label" for="sd-tab-item-8">
+shell</label><div class="sd-tab-content docutils">
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>tleap<span class="w"> </span>-f<span class="w"> </span>leap_solv.in
 </pre></div>
 </div>
 </div>
